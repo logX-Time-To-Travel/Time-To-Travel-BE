@@ -12,7 +12,6 @@ import lombok.*;
 @Entity
 @Table(name = "location")
 public class Location {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,6 +23,6 @@ public class Location {
     private double longitude;
 
     @ManyToOne
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 }
