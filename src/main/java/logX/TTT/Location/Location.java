@@ -23,7 +23,7 @@ public class Location {
     @Column(nullable = false)
     private double longitude;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
 }

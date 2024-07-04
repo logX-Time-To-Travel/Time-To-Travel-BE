@@ -2,6 +2,7 @@ package logX.TTT.Post;
 
 import jakarta.persistence.*;
 import logX.TTT.Comment.Comment;
+import logX.TTT.Location.Location;
 import logX.TTT.Member.Member;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -38,5 +39,6 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
 
-
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Location> locations;
 }
