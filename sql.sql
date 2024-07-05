@@ -1,4 +1,4 @@
-CREATE TABLE Member (
+CREATE TABLE member (
                         id INT AUTO_INCREMENT PRIMARY KEY,
                         username VARCHAR(255) NOT NULL,
                         email VARCHAR(255) NOT NULL,
@@ -7,7 +7,7 @@ CREATE TABLE Member (
                         profile_image VARCHAR(255)
 );
 
-CREATE TABLE Post (
+CREATE TABLE post (
                       id INT AUTO_INCREMENT PRIMARY KEY,
                       member_id INT,
                       title TEXT NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE Post (
                       FOREIGN KEY (member_id) REFERENCES Member(id)
 );
 
-CREATE TABLE Content (
+CREATE TABLE content (
                          id INT AUTO_INCREMENT PRIMARY KEY,
                          post_id INT NOT NULL,
                          type VARCHAR(255) NOT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE Content (
 );
 
 
-CREATE TABLE Location (
+CREATE TABLE location (
                           id INT AUTO_INCREMENT PRIMARY KEY,
                           post_id INT NOT NULL,
                           latitude DECIMAL(10, 7) NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE Location (
 );
 
 
-CREATE TABLE Comment (
+CREATE TABLE comment (
                          id INT AUTO_INCREMENT PRIMARY KEY,
                          post_id INT NOT NULL,
                          member_id INT NOT NULL,
