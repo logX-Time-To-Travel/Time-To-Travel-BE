@@ -13,7 +13,7 @@ CREATE TABLE post (
                       title TEXT NOT NULL,
                       content TEXT NOT NULL,
                       created_at TIMESTAMP NOT NULL,
-                      FOREIGN KEY (member_id) REFERENCES Member(id)
+                      FOREIGN KEY (member_id) REFERENCES member(id)
 );
 
 CREATE TABLE content (
@@ -22,7 +22,7 @@ CREATE TABLE content (
                          type VARCHAR(255) NOT NULL,
                          `index` INT NOT NULL,
                          data TEXT NOT NULL,
-                         FOREIGN KEY (post_id) REFERENCES Post(id)
+                         FOREIGN KEY (post_id) REFERENCES post(id)
 );
 
 
@@ -31,7 +31,7 @@ CREATE TABLE location (
                           post_id INT NOT NULL,
                           latitude DECIMAL(10, 7) NOT NULL,
                           longitude DECIMAL(10, 7) NOT NULL,
-                          FOREIGN KEY (post_id) REFERENCES Post(id)
+                          FOREIGN KEY (post_id) REFERENCES post(id)
 );
 
 
@@ -41,6 +41,6 @@ CREATE TABLE comment (
                          member_id INT NOT NULL,
                          content TEXT NOT NULL,
                          created_at TIMESTAMP NOT NULL,
-                         FOREIGN KEY (post_id) REFERENCES Post(id),
-                         FOREIGN KEY (member_id) REFERENCES Member(id)
+                         FOREIGN KEY (post_id) REFERENCES post(id),
+                         FOREIGN KEY (member_id) REFERENCES member(id)
 );
