@@ -1,5 +1,6 @@
 package logX.TTT.member;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -7,11 +8,10 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class MemberService {
-    @Autowired
-    private MemberRepository memberRepository;
 
-    @Autowired
+    private MemberRepository memberRepository;
     private PasswordEncoder passwordEncoder;
 
     private Member login(String username, String password) {
@@ -38,4 +38,7 @@ public class MemberService {
         return memberRepository.existsByUsername(username);
     }
 
+    private void delete(String username) {
+        memberRepository.deleteByUsername(username);
+    }
 }
