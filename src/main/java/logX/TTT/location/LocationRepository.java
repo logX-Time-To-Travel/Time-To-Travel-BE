@@ -1,4 +1,4 @@
-package logX.TTT.Location;
+package logX.TTT.location;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,8 +1,8 @@
-package logX.TTT.Comment;
+package logX.TTT.comment;
 
 import jakarta.persistence.*;
-import logX.TTT.Member.Member;
-import logX.TTT.Post.Post;
+import logX.TTT.member.Member;
+import logX.TTT.post.Post;
 import lombok.AllArgsConstructor;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;

@@ -1,7 +1,7 @@
-package logX.TTT.Location;
+package logX.TTT.location;
 
 import jakarta.persistence.*;
-import logX.TTT.Post.Post;
+import logX.TTT.post.Post;
 import lombok.*;
 
 @Getter
