@@ -31,7 +31,6 @@ public class Member {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @Lob
     @Column(name = "profile_image_url")
     private String profileImage;
 }
