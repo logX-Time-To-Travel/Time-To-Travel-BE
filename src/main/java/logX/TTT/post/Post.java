@@ -1,10 +1,10 @@
-package logX.TTT.Post;
+package logX.TTT.post;
 
 import jakarta.persistence.*;
-import logX.TTT.Comment.Comment;
-import logX.TTT.Content.Content;
-import logX.TTT.Location.Location;
-import logX.TTT.Member.Member;
+import logX.TTT.comment.Comment;
+import logX.TTT.content.Content;
+import logX.TTT.location.Location;
+import logX.TTT.member.Member;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 

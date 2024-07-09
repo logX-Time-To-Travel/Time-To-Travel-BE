@@ -1,4 +1,4 @@
-package logX.TTT.Content;
+package logX.TTT.content;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

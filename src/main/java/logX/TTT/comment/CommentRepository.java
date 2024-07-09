@@ -1,4 +1,4 @@
-package logX.TTT.Comment;
+package logX.TTT.comment;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

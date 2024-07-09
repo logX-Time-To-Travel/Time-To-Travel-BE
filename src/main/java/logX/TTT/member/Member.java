@@ -1,4 +1,4 @@
-package logX.TTT.Member;
+package logX.TTT.member;
 
 import jakarta.persistence.*;
 import lombok.*;
