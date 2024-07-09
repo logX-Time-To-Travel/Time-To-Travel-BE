@@ -21,8 +21,7 @@ public class FileUploadController {
     public ResponseEntity<String> uploadFile(@RequestParam("file")MultipartFile file) {
         try {
             String filePath = fileStorageService.storeFile(file);
-            String fileUrl = fileStorageService.getFileUrl(filePath);
-            return ResponseEntity.ok(fileUrl);
+            return ResponseEntity.ok(filePath);
         }
         catch(IOException e) {
             return ResponseEntity.status(500).body("파일 업로드 실패");

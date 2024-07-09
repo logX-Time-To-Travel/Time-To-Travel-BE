@@ -20,8 +20,4 @@ public class FileStorageService {
         Files.copy(file.getInputStream(), filePath);
         return filePath.toString();
     }
-
-    public String getFileUrl(String filename) {
-        return "/image"+ filename;
-    }
 }
