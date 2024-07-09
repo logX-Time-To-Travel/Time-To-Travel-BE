@@ -14,6 +14,7 @@ public class MemberService {
     private MemberRepository memberRepository;
     private PasswordEncoder passwordEncoder;
 
+    // 로그인
     private Member login(String username, String password) {
         Optional<Member> optionalMember = memberRepository.findByUsername(username);
         if(optionalMember.isPresent()) { // 회원 조회
