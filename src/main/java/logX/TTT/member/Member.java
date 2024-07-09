@@ -32,6 +32,6 @@ public class Member {
     private LocalDateTime createdAt;
 
     @Lob
-    @Column(name = "profile_image")
-    private byte[] profileImage;
+    @Column(name = "profile_image_url")
+    private String profileImage;
 }
