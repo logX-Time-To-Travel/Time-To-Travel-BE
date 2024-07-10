@@ -28,6 +28,9 @@ public class MemberService {
 
 
     public Member signup(SignupDTO form) {
+        if(memberRepository.existsByEmail(form.getEmail())) {
+            throw new RuntimeException("해당 이메일로 가입된 회원이 있습니다.");
+        }
         Member member = new Member();
         member.setUsername(form.getUsername());
         member.setEmail(form.getEmail());
