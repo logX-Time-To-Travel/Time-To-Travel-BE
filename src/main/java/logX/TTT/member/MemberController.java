@@ -33,7 +33,7 @@ public class MemberController {
             return ResponseEntity.ok().build();
         } catch (RuntimeException e) {
             response.put("error", e.getMessage());
-            return ResponseEntity.status(404).body(response);
+            return ResponseEntity.status(400).body(response);
         }
     }
 
