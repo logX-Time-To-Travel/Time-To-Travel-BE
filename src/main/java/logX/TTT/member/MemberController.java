@@ -4,8 +4,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import logX.TTT.member.model.LoginDTO;
 import logX.TTT.member.model.SignupDTO;
+import logX.TTT.member.model.UserInfoDTO;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,5 +47,17 @@ public class MemberController {
             response.put("error", e.getMessage());
             return ResponseEntity.status(400).body(response);
         }
+    }
+
+    @PostMapping("/session")
+    public ResponseEntity<UserInfoDTO> session(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("member") == null) {
+            return ResponseEntity.status(401).build();
+        }
+        Long loggedInId = (Long) session.getAttribute("member");
+        Member member = memberService.getMemberById(loggedInId);
+        UserInfoDTO form = memberService.convertToUserInfoDTO(member);
+        return ResponseEntity.ok(new UserInfoDTO());
     }
 }

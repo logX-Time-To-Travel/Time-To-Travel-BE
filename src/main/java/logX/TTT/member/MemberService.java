@@ -3,6 +3,7 @@ package logX.TTT.member;
 import logX.TTT.member.model.LoginDTO;
 import logX.TTT.member.model.SignupDTO;
 import logX.TTT.member.model.UpdateMemberDTO;
+import logX.TTT.member.model.UserInfoDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,20 @@ public class MemberService {
         member.setPassword(passwordEncoder.encode(form.getPassword()));
         member.setProfileImageUrl(form.getProfileImageUrl());
         return memberRepository.save(member);
+    }
+
+    public Member getMemberById(Long id) {
+        return memberRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("해당 회원이 없습니다."));
+    }
+
+    public UserInfoDTO convertToUserInfoDTO(Member member) {
+        return new UserInfoDTO(
+                member.getEmail(),
+                member.getUsername(),
+                member.getProfileImageUrl(),
+                member.getCreatedAt()
+        );
     }
 
     public boolean isEmailUsed(String email) {
