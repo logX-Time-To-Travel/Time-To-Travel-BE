@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
 
 @Controller
 @RequestMapping("/image")
@@ -18,13 +20,16 @@ public class FileUploadController {
     private FileStorageService fileStorageService;
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadFile(@RequestParam("file")MultipartFile file) {
+    public ResponseEntity<Map<String, String>> uploadFile(@RequestParam("file")MultipartFile file) {
+        Map<String, String> response = new HashMap<>();
         try {
             String filePath = fileStorageService.storeFile(file);
-            return ResponseEntity.ok(filePath);
+            response.put("imageURL", filePath);
+            return ResponseEntity.ok(response);
         }
         catch(IOException e) {
-            return ResponseEntity.status(500).body("파일 업로드 실패");
+            response.put("error", "파일 업로드 실패");
+            return ResponseEntity.status(500).body(response);
         }
     }
 }

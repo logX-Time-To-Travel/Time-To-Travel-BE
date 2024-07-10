@@ -32,5 +32,5 @@ public class Member {
     private LocalDateTime createdAt;
 
     @Column(name = "profile_image_url")
-    private String profileImage;
+    private String profileImageUrl;
 }
