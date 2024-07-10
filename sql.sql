@@ -4,7 +4,7 @@ CREATE TABLE member (
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
     created_at DATE NOT NULL,
-    profile_image VARCHAR(255)
+    profile_image_url VARCHAR(255)
 );
 
 CREATE TABLE post (

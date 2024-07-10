@@ -1,7 +1,9 @@
 package logX.TTT.member;
 
+import logX.TTT.member.model.LoginDTO;
+import logX.TTT.member.model.SignupDTO;
+import logX.TTT.member.model.UpdateMemberDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -11,34 +13,46 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberService {
 
-    private MemberRepository memberRepository;
-    private PasswordEncoder passwordEncoder;
+    private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    private Member login(String username, String password) {
-        Optional<Member> optionalMember = memberRepository.findByUsername(username);
-        if(optionalMember.isPresent()) { // 회원 조회
-            Member member = optionalMember.get();
-            if(passwordEncoder.matches(password, member.getPassword())) { // 비밀번호 대조
-                return member;
-            }
+    public Member login(LoginDTO form) {
+        Optional<Member> optionalMember = memberRepository.findByEmail(form.getEmail());
+        Member member = optionalMember.orElseThrow(() -> new RuntimeException("가입된 이메일이 없습니다."));
+
+        if (!passwordEncoder.matches(form.getPassword(), member.getPassword())) { // 비밀번호 대조
+            throw new RuntimeException("비밀번호가 일치하지 않습니다.");
         }
-        return null;
+        return member;
     }
 
-    private Member signup(Member member) {
-        member.setPassword(passwordEncoder.encode(member.getPassword()));
+
+    public Member signup(SignupDTO form) {
+        Member member = new Member();
+        member.setUsername(form.getUsername());
+        member.setEmail(form.getEmail());
+        member.setPassword(passwordEncoder.encode(form.getPassword()));
+        member.setProfileImageUrl(form.getProfileImageUrl());
         return memberRepository.save(member);
     }
 
-    private boolean isEmailUsed(String email) {
+    public boolean isEmailUsed(String email) {
         return memberRepository.existsByEmail(email);
     }
 
-    private boolean isUsernameUsed(String username) {
+    public boolean isUsernameUsed(String username) {
         return memberRepository.existsByUsername(username);
     }
 
-    private void delete(String username) {
+    public Member updateMember(UpdateMemberDTO form) {
+        Optional<Member> optionalMember = memberRepository.findByUsername(form.getUsername());
+        Member member = optionalMember.orElseThrow(() -> new RuntimeException("멤버를 찾을 수 없음"));
+        member.setUsername(form.getUsername());
+        member.setProfileImageUrl(form.getProfileImageUrl());
+        return memberRepository.save(member);
+    }
+
+    public void delete(String username) {
         memberRepository.deleteByUsername(username);
     }
 }
