@@ -2,6 +2,7 @@ package logX.TTT.member;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import logX.TTT.member.model.CheckUsernameDTO;
 import logX.TTT.member.model.LoginDTO;
 import logX.TTT.member.model.SignupDTO;
 import logX.TTT.member.model.UserInfoDTO;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -65,6 +67,14 @@ public class MemberController {
     public ResponseEntity logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if(session != null) session.invalidate();
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/check-username")
+    public ResponseEntity checkUsername(@RequestBody CheckUsernameDTO form) {
+        if(memberService.isUsernameUsed(form.getUsername())) {
+            return ResponseEntity.status(400).body("사용중인 닉네임입니다.");
+        }
         return ResponseEntity.ok().build();
     }
 }

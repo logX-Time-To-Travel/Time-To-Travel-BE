@@ -54,10 +54,6 @@ public class MemberService {
         );
     }
 
-    public boolean isEmailUsed(String email) {
-        return memberRepository.existsByEmail(email);
-    }
-
     public boolean isUsernameUsed(String username) {
         return memberRepository.existsByUsername(username);
     }
