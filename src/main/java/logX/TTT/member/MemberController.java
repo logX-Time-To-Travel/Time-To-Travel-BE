@@ -9,10 +9,7 @@ import logX.TTT.member.model.UserInfoDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -72,5 +69,15 @@ public class MemberController {
             return ResponseEntity.status(400).body("사용중인 닉네임입니다.");
         }
         return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{username}")
+    public ResponseEntity deleteMember(@PathVariable String username) {
+        try {
+            memberService.delete(username);
+            return ResponseEntity.ok().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
     }
 }

@@ -7,6 +7,7 @@ import logX.TTT.member.model.UserInfoDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -60,13 +61,16 @@ public class MemberService {
 
     public Member updateMember(UpdateMemberDTO form) {
         Optional<Member> optionalMember = memberRepository.findByUsername(form.getUsername());
-        Member member = optionalMember.orElseThrow(() -> new RuntimeException("멤버를 찾을 수 없음"));
+        Member member = optionalMember.orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
         member.setUsername(form.getUsername());
         member.setProfileImageUrl(form.getProfileImageUrl());
         return memberRepository.save(member);
     }
 
+    @Transactional
     public void delete(String username) {
-        memberRepository.deleteByUsername(username);
+        Member member = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
+        memberRepository.delete(member);
     }
 }
