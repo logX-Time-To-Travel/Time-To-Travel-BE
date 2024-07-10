@@ -26,28 +26,24 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody LoginDTO form, HttpServletRequest request) {
-        Map<String, String> response = new HashMap<>();
+    public ResponseEntity login(@RequestBody LoginDTO form, HttpServletRequest request) {
         try {
             Member loginMember = memberService.login(form);
             HttpSession session = request.getSession();
             session.setAttribute("member", loginMember.getId());
             return ResponseEntity.ok().build();
         } catch (RuntimeException e) {
-            response.put("error", e.getMessage());
-            return ResponseEntity.status(400).body(response);
+            return ResponseEntity.status(400).body(e.getMessage());
         }
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<Map<String, String>> signup(@RequestBody SignupDTO form) {
-        Map<String, String> response = new HashMap<>();
+    public ResponseEntity signup(@RequestBody SignupDTO form) {
         try {
             memberService.signup(form);
             return ResponseEntity.ok().build();
         } catch (RuntimeException e) {
-            response.put("error", e.getMessage());
-            return ResponseEntity.status(400).body(response);
+            return ResponseEntity.status(400).body(e.getMessage());
         }
     }
 
