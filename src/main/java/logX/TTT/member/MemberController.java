@@ -58,7 +58,7 @@ public class MemberController {
         Long loggedInId = (Long) session.getAttribute("member");
         Member member = memberService.getMemberById(loggedInId);
         UserInfoDTO form = memberService.convertToUserInfoDTO(member);
-        return ResponseEntity.ok(new UserInfoDTO());
+        return ResponseEntity.ok(form);
     }
 
     @PostMapping("/logout")
