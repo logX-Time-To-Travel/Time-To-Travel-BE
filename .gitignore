@@ -1,11 +1,17 @@
 HELP.md
 .gradle
 build/
-images/*
-!images/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+
+# Ignore all files in the images directory
+images/*
+images/**
+
+# But do not ignore the images directory itself
+!images/
+!images/.gitkeep
 
 ### STS ###
 .apt_generated
