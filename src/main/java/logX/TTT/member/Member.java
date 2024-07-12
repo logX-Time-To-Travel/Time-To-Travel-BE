@@ -1,10 +1,13 @@
 package logX.TTT.member;
 
 import jakarta.persistence.*;
+import logX.TTT.likes.Likes;
+import logX.TTT.views.Views;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -33,4 +36,16 @@ public class Member {
 
     @Column(name = "profile_image_url")
     private String profileImageUrl;
+
+    @Column(name = "total_likes", nullable = false)
+    private int totalLikes;
+
+    @Column(name = "total_views", nullable = false)
+    private int totalViews;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Likes> likes;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Views> views;
 }
