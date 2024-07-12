@@ -17,7 +17,7 @@ public class PostService {
 
     public PostDTO createPost(String title, String content, Long memberId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid member ID"));
+                .orElseThrow(() -> new IllegalArgumentException("post ID를 찾을 수 없습니다."));
 
         Post post = Post.builder()
                 .title(title)
@@ -31,13 +31,13 @@ public class PostService {
 
     public PostDTO getPost(Long id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid post ID"));
+                .orElseThrow(() -> new IllegalArgumentException("post ID를 찾을 수 없습니다."));
         return convertToDTO(post);
     }
 
     public PostDTO updatePost(Long id, String title, String content) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid post ID"));
+                .orElseThrow(() -> new IllegalArgumentException("post ID를 찾을 수 없습니다."));
 
         post.setTitle(title);
         post.setContent(content);
@@ -47,7 +47,7 @@ public class PostService {
 
     public void deletePost(Long id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid post ID"));
+                .orElseThrow(() -> new IllegalArgumentException("post ID를 찾을 수 없습니다."));
 
         postRepository.delete(post);
     }
