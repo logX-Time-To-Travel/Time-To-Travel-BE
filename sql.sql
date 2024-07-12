@@ -63,3 +63,9 @@ CREATE TABLE views (
     FOREIGN KEY (member_id) REFERENCES member (id)
 );
 
+CREATE TABLE interests(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    member_id INT NOT NULL,
+    interest VARCHAR(255) NOT NULL,
+    FOREIGN KEY (member_id) REFERENCES member (id)
+);
