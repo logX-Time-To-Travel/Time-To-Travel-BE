@@ -13,7 +13,7 @@ public class PostController {
     @Autowired
     private PostService postService;
 
-    @PostMapping
+    @PostMapping("/add")
     public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO postDTO) {
         PostDTO createdPost = postService.createPost(postDTO.getTitle(), postDTO.getContent(), postDTO.getMemberId());
         return new ResponseEntity<>(createdPost, HttpStatus.CREATED);
