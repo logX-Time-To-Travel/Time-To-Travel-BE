@@ -20,4 +20,5 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             @Param("maxLatitude") double maxLatitude,
             @Param("maxLongitude") double maxLongitude
     );
+
 }
