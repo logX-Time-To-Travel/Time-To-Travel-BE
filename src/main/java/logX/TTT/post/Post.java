@@ -20,6 +20,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "post")
+
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
