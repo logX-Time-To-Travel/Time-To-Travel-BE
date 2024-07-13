@@ -1,0 +1,78 @@
+package logX.TTT.comment;
+
+import logX.TTT.comment.model.CommentDTO;
+import logX.TTT.member.Member;
+import logX.TTT.member.MemberRepository;
+import logX.TTT.post.Post;
+import logX.TTT.post.PostRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class CommentService {
+
+    @Autowired
+    private CommentRepository commentRepository;
+
+    @Autowired
+    private PostRepository postRepository;
+
+    @Autowired
+    private MemberRepository memberRepository;
+
+    public CommentDTO createComment(Long postId, Long memberId, String content) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid post ID"));
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid member ID"));
+
+        Comment comment = Comment.builder()
+                .post(post)
+                .member(member)
+                .content(content)
+                .build();
+
+        Comment savedComment = commentRepository.save(comment);
+        return convertToDTO(savedComment);
+    }
+
+    public CommentDTO getComment(Long id) {
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid comment ID"));
+        return convertToDTO(comment);
+    }
+
+    public List<CommentDTO> getCommentsByPost(Long postId) {
+        List<Comment> comments = commentRepository.findByPostId(postId);
+        return comments.stream().map(this::convertToDTO).collect(Collectors.toList());
+    }
+
+    public CommentDTO updateComment(Long id, String content) {
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid comment ID"));
+
+        comment.setContent(content);
+        Comment updatedComment = commentRepository.save(comment);
+        return convertToDTO(updatedComment);
+    }
+
+    public void deleteComment(Long id) {
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid comment ID"));
+
+        commentRepository.delete(comment);
+    }
+
+    private CommentDTO convertToDTO(Comment comment) {
+        return new CommentDTO(
+                comment.getId(),
+                comment.getPost().getId(),
+                comment.getMember().getId(),
+                comment.getContent(),
+                comment.getCreatedAt()
+        );
+    }
+}
