@@ -18,7 +18,7 @@ public class SearchHistory {
 
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
+    private Long memberId;
 
     @Column(name = "query", nullable = false)
     private String query;

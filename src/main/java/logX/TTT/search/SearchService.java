@@ -13,7 +13,7 @@ public class SearchService {
 
     public void saveSearchQuery(Long memberId, String query) {
         SearchHistory searchHistory = new SearchHistory();
-        searchHistory.setMember(memberId);
+        searchHistory.setMemberId(memberId);
         searchHistory.setQuery(query);
         searchHistoryRepository.save(searchHistory);
 
