@@ -73,4 +73,10 @@ public class MemberService {
                 .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
         memberRepository.delete(member);
     }
+
+    public Long getMemberIdByUsername(String username) {
+        Member member = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
+        return member.getId();
+    }
 }
