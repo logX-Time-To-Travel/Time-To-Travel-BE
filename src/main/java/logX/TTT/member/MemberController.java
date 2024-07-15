@@ -80,4 +80,10 @@ public class MemberController {
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }
+
+    @GetMapping("/{username}")
+    public ResponseEntity<UserInfoDTO> showUserInfo(@PathVariable String username) {
+        UserInfoDTO userInfo = memberService.getUserInfoByUsername(username);
+        return ResponseEntity.ok(userInfo);
+    }
 }

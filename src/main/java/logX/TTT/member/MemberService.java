@@ -79,4 +79,16 @@ public class MemberService {
                 .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
         return member.getId();
     }
+
+    public UserInfoDTO getUserInfoByUsername(String username) {
+        Member member = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
+
+        return new UserInfoDTO(
+                member.getEmail(),
+                member.getUsername(),
+                member.getProfileImageUrl(),
+                member.getCreatedAt()
+        );
+    }
 }
