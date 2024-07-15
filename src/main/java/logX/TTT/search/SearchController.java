@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Map;
+
 @Controller
 @RequestMapping("/search")
 public class SearchController {
@@ -18,7 +20,8 @@ public class SearchController {
     private MemberService memberService;
 
     @PostMapping("/{username}")
-    public ResponseEntity<Void> saveSearchQuery(@PathVariable String username, @RequestBody String query) {
+    public ResponseEntity<Void> saveSearchQuery(@PathVariable String username, @RequestBody Map<String, String> requestBody) {
+        String query = requestBody.get("keyword");
         Long memberId = memberService.getMemberIdByUsername(username);
         searchService.saveSearchQuery(memberId, query);
         return ResponseEntity.ok().build();
