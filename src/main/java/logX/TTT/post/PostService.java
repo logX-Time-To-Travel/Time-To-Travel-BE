@@ -6,6 +6,9 @@ import logX.TTT.post.model.PostDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class PostService {
 
@@ -60,5 +63,16 @@ public class PostService {
                 post.getContent(),
                 post.getCreatedAt()
         );
+    }
+
+    public List<PostDTO> getPostsByUsername(String username) {
+        Member member = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("회원이 존재하지 않습니다."));
+
+        List<Post> posts = postRepository.findByUsername(username);
+
+        return posts.stream()
+                .map(post -> new PostDTO(post.getId(), member.getId(), post.getTitle(), post.getContent(), post.getCreatedAt()))
+                .collect(Collectors.toList());
     }
 }

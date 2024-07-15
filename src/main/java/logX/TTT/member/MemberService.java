@@ -59,11 +59,14 @@ public class MemberService {
         return memberRepository.existsByUsername(username);
     }
 
-    public Member updateMember(UpdateMemberDTO form) {
-        Optional<Member> optionalMember = memberRepository.findByUsername(form.getUsername());
-        Member member = optionalMember.orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
-        member.setUsername(form.getUsername());
-        member.setProfileImageUrl(form.getProfileImageUrl());
+    @Transactional
+    public Member updateMember(String username, UpdateMemberDTO updateMemberDTO) {
+        Member member = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
+
+        member.setUsername(updateMemberDTO.getUsername());
+        member.setProfileImageUrl(updateMemberDTO.getProfileImageUrl());
+
         return memberRepository.save(member);
     }
 
@@ -78,5 +81,17 @@ public class MemberService {
         Member member = memberRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
         return member.getId();
+    }
+
+    public UserInfoDTO getUserInfoByUsername(String username) {
+        Member member = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
+
+        return new UserInfoDTO(
+                member.getEmail(),
+                member.getUsername(),
+                member.getProfileImageUrl(),
+                member.getCreatedAt()
+        );
     }
 }
