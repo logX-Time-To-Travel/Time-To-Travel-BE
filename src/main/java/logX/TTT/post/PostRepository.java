@@ -21,6 +21,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             @Param("maxLongitude") double maxLongitude
     );
 
+    List<Post> findByUsername(String username);
     List<Post> findByTitleContainingOrContentContaining(String keyword);
 
 }
