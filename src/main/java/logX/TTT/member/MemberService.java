@@ -59,14 +59,6 @@ public class MemberService {
         return memberRepository.existsByUsername(username);
     }
 
-    public Member updateMember(UpdateMemberDTO form) {
-        Optional<Member> optionalMember = memberRepository.findByUsername(form.getUsername());
-        Member member = optionalMember.orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
-        member.setUsername(form.getUsername());
-        member.setProfileImageUrl(form.getProfileImageUrl());
-        return memberRepository.save(member);
-    }
-
     @Transactional
     public void delete(String username) {
         Member member = memberRepository.findByUsername(username)

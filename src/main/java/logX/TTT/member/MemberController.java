@@ -2,10 +2,7 @@ package logX.TTT.member;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import logX.TTT.member.model.CheckUsernameDTO;
-import logX.TTT.member.model.LoginDTO;
-import logX.TTT.member.model.SignupDTO;
-import logX.TTT.member.model.UserInfoDTO;
+import logX.TTT.member.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -45,14 +42,15 @@ public class MemberController {
     }
 
     @PostMapping("/session")
-    public ResponseEntity<UserInfoDTO> session(HttpServletRequest request) {
+    public ResponseEntity<SessionDTO> session(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("member") == null) {
             return ResponseEntity.status(401).build();
         }
         Long loggedInId = (Long) session.getAttribute("member");
         Member member = memberService.getMemberById(loggedInId);
-        UserInfoDTO form = memberService.convertToUserInfoDTO(member);
+
+        SessionDTO form = new SessionDTO(member.getId(), member.getUsername());
         return ResponseEntity.ok(form);
     }
 
