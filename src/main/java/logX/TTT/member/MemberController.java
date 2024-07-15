@@ -84,4 +84,14 @@ public class MemberController {
         UserInfoDTO userInfo = memberService.getUserInfoByUsername(username);
         return ResponseEntity.ok(userInfo);
     }
+
+    @PutMapping("/{username}")
+    public ResponseEntity updateUserInfo(@PathVariable String username, @RequestBody UpdateMemberDTO updateMemberDTO) {
+        try {
+            memberService.updateMember(username, updateMemberDTO);
+            return ResponseEntity.ok().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(404).build();
+        }
+    }
 }
