@@ -20,7 +20,6 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "post")
-
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,9 +31,6 @@ public class Post {
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String title;
-
-    @Column(nullable = false, columnDefinition = "TEXT")
-    private String content;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

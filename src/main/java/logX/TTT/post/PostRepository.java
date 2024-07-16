@@ -1,5 +1,6 @@
 package logX.TTT.post;
 
+import logX.TTT.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,4 +15,5 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findByUsername(String username);
     List<Post> findByTitleContainingOrContentContaining(String keyword);
 
+    List<Post> findByMember(Member member);
 }

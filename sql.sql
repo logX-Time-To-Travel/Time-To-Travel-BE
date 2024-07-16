@@ -16,7 +16,6 @@ CREATE TABLE post
     id         INT AUTO_INCREMENT PRIMARY KEY,
     member_id  INT,
     title      TEXT      NOT NULL,
-    content    TEXT      NOT NULL,
     created_at TIMESTAMP NOT NULL,
     FOREIGN KEY (member_id) REFERENCES member (id)
 );
