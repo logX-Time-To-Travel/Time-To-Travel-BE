@@ -1,5 +1,7 @@
 package logX.TTT.post;
 
+import logX.TTT.content.Content;
+import logX.TTT.content.model.ContentDTO;
 import logX.TTT.member.Member;
 import logX.TTT.member.MemberRepository;
 import logX.TTT.post.model.PostDTO;
@@ -18,15 +20,24 @@ public class PostService {
     @Autowired
     private MemberRepository memberRepository;
 
-    public PostDTO createPost(String title, String content, Long memberId) {
+    public PostDTO createPost(String title, List<ContentDTO> contentList, Long memberId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("post ID를 찾을 수 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("회원 ID를 찾을 수 없습니다."));
 
         Post post = Post.builder()
                 .title(title)
-                .content(content)
                 .member(member)
                 .build();
+
+        List<Content> contents = contentList.stream()
+                .map(contentDTO -> Content.builder()
+                        .type(contentDTO.getType())
+                        .data(contentDTO.getData())
+                        .post(post)
+                        .build())
+                .collect(Collectors.toList());
+
+        post.setContentList(contents);
 
         Post savedPost = postRepository.save(post);
         return convertToDTO(savedPost);
@@ -34,23 +45,30 @@ public class PostService {
 
     public PostDTO getPost(Long id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("post ID를 찾을 수 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("포스트 ID를 찾을 수 없습니다."));
         return convertToDTO(post);
     }
 
-    public PostDTO updatePost(Long id, String title, String content) {
+    public PostDTO updatePost(Long id, String title, List<ContentDTO> contentList) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("post ID를 찾을 수 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("포스트 ID를 찾을 수 없습니다."));
 
         post.setTitle(title);
-        post.setContent(content);
+        post.setContentList(contentList.stream()
+                .map(contentDTO -> Content.builder()
+                        .type(contentDTO.getType())
+                        .data(contentDTO.getData())
+                        .post(post)
+                        .build())
+                .collect(Collectors.toList()));
+
         Post updatedPost = postRepository.save(post);
         return convertToDTO(updatedPost);
     }
 
     public void deletePost(Long id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("post ID를 찾을 수 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("포스트 ID를 찾을 수 없습니다."));
 
         postRepository.delete(post);
     }
@@ -60,7 +78,9 @@ public class PostService {
                 post.getId(),
                 post.getMember().getId(),
                 post.getTitle(),
-                post.getContent(),
+                post.getContentList().stream()
+                        .map(content -> new ContentDTO(content.getId(), content.getType(), content.getData()))
+                        .collect(Collectors.toList()),
                 post.getCreatedAt()
         );
     }
@@ -69,10 +89,12 @@ public class PostService {
         Member member = memberRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("회원이 존재하지 않습니다."));
 
-        List<Post> posts = postRepository.findByUsername(username);
+        List<Post> posts = postRepository.findByMember(member);
 
         return posts.stream()
-                .map(post -> new PostDTO(post.getId(), member.getId(), post.getTitle(), post.getContent(), post.getCreatedAt()))
+                .map(post -> new PostDTO(post.getId(), member.getId(), post.getTitle(), post.getContentList().stream()
+                        .map(content -> new ContentDTO(content.getId(), content.getType(), content.getData()))
+                        .collect(Collectors.toList()), post.getCreatedAt()))
                 .collect(Collectors.toList());
     }
 }
