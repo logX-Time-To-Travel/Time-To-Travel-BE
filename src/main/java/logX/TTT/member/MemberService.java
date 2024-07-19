@@ -50,6 +50,7 @@ public class MemberService {
         return new UserInfoDTO(
                 member.getEmail(),
                 member.getUsername(),
+                member.getIntroduction(),
                 member.getProfileImageUrl(),
                 member.getCreatedAt()
         );
@@ -65,6 +66,7 @@ public class MemberService {
                 .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
 
         member.setUsername(updateMemberDTO.getUsername());
+        member.setIntroduction(updateMemberDTO.getIntroduction());
         member.setProfileImageUrl(updateMemberDTO.getProfileImageUrl());
 
         return memberRepository.save(member);
@@ -90,6 +92,7 @@ public class MemberService {
         return new UserInfoDTO(
                 member.getEmail(),
                 member.getUsername(),
+                member.getIntroduction(),
                 member.getProfileImageUrl(),
                 member.getCreatedAt()
         );

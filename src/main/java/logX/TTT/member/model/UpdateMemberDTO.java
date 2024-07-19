@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class UpdateMemberDTO {
     private String username;
     private String profileImageUrl;
+    private String introduction;
 }
