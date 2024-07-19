@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 public class UserInfoDTO {
     private String email;
     private String username;
+    private String introduction;
     private String profileImageUrl;
     private LocalDateTime created_at;
 }
