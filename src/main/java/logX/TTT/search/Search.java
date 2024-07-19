@@ -11,14 +11,14 @@ import lombok.*;
 @Builder
 @Entity
 @Table(name = "search_history")
-public class SearchHistory {
+public class Search {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
-    private Long memberId;
+    private Member member;
 
     @Column(name = "query", nullable = false)
     private String query;
