@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import logX.TTT.member.Member;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,4 +24,7 @@ public class Search {
 
     @Column(name = "query", nullable = false)
     private String query;
+
+    @Column(name = "searched_at", nullable = false)
+    private LocalDateTime searchedAt;
 }
