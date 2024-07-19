@@ -30,6 +30,9 @@ public class Member {
     @Column(nullable = false)
     private String password;
 
+    @Column
+    private String introduction;
+
     @Column(name = "created_at", nullable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
