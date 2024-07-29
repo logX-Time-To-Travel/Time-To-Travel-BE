@@ -46,10 +46,24 @@ public class PostController {
         }
     }
 
+    // 하나의 게시물 삭제
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePost(@PathVariable Long id) {
         try {
             postService.deletePost(id);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    // 여러 개의 게시물 삭제
+    @DeleteMapping("/delete")
+    public ResponseEntity<Void> deleteMultiplePosts(@RequestBody List<Long> ids) {
+        try {
+            for (Long id : ids) {
+                postService.deletePost(id);
+            }
             return ResponseEntity.noContent().build();
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
