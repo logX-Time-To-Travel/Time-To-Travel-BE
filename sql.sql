@@ -85,4 +85,14 @@ CREATE TABLE search_history
     FOREIGN KEY (member_id) REFERENCES member (id)
 );
 
+CREATE TABLE scrap
+(
+    id         INT AUTO_INCREMENT PRIMARY KEY,
+    member_id  INT NOT NULL,
+    post_id    INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (member_id) REFERENCES member (id),
+    FOREIGN KEY (post_id) REFERENCES post (id),
+    UNIQUE (member_id, post_id) -- 사용자가 같은 게시글을 여러 번 스크랩할 수 없도록
+);
 
