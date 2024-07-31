@@ -26,8 +26,6 @@ CREATE TABLE content
 (
     id      INT AUTO_INCREMENT PRIMARY KEY,
     post_id INT          NOT NULL,
-    type    VARCHAR(255) NOT NULL,
-    `index` INT          NOT NULL,
     data    TEXT         NOT NULL,
     FOREIGN KEY (post_id) REFERENCES post (id)
 );
