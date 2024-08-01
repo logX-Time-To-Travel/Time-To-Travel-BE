@@ -21,11 +21,5 @@ public class Content {
     private Post post;
 
     @Column(nullable = false)
-    private String type; // 'text' | 'image'
-
-    @Column(nullable = false)
-    private int index;
-
-    @Column(nullable = false)
     private String data; // 글 내용 | 이미지URL
 }

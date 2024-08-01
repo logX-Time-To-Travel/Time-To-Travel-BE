@@ -1,6 +1,7 @@
 package logX.TTT.post;
 
-import logX.TTT.post.model.PostDTO;
+import logX.TTT.post.model.PostCreateDTO;
+import logX.TTT.post.model.PostResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +18,9 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("/add")
-    public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO postDTO) {
+    public ResponseEntity<PostResponseDTO> createPost(@RequestBody PostCreateDTO postCreateDTO) {
         try {
-            PostDTO createdPost = postService.createPost(postDTO.getTitle(), postDTO.getContent(), postDTO.getMemberId());
+            PostResponseDTO createdPost = postService.createPost(postCreateDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -27,19 +28,19 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PostDTO> getPost(@PathVariable Long id) {
+    public ResponseEntity<PostResponseDTO> getPost(@PathVariable Long id) {
         try {
-            PostDTO postDTO = postService.getPost(id);
-            return ResponseEntity.ok(postDTO);
+            PostResponseDTO postResponseDTO = postService.getPost(id);
+            return ResponseEntity.ok(postResponseDTO);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PostDTO> updatePost(@PathVariable Long id, @RequestBody PostDTO postDTO) {
+    public ResponseEntity<PostResponseDTO> updatePost(@PathVariable Long id, @RequestBody PostCreateDTO postCreateDTO) {
         try {
-            PostDTO updatedPost = postService.updatePost(id, postDTO.getTitle(), postDTO.getContent());
+            PostResponseDTO updatedPost = postService.updatePost(id, postCreateDTO);
             return ResponseEntity.ok(updatedPost);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -71,9 +72,9 @@ public class PostController {
     }
 
     @GetMapping("/user/{username}")
-    public ResponseEntity<List<PostDTO>> getPostsByUsername(@PathVariable String username) {
+    public ResponseEntity<List<PostResponseDTO>> getPostsByUsername(@PathVariable String username) {
         try {
-            List<PostDTO> posts = postService.getPostsByUsername(username);
+            List<PostResponseDTO> posts = postService.getPostsByUsername(username);
             return ResponseEntity.ok(posts);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

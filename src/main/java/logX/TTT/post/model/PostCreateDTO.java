@@ -1,6 +1,7 @@
 package logX.TTT.post.model;
 
 import logX.TTT.content.model.ContentDTO;
+import logX.TTT.location.Location;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,10 +12,11 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostDTO {
+public class PostCreateDTO {
     private Long id;
     private Long memberId;
     private String title;
     private List<ContentDTO> content;
+    private List<Location> locations;
     private LocalDateTime createdAt;
 }
