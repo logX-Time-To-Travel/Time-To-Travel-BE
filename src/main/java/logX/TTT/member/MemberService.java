@@ -30,14 +30,19 @@ public class MemberService {
 
 
     public Member signup(SignupDTO form) {
-        if(memberRepository.existsByEmail(form.getEmail())) {
+        if (memberRepository.existsByEmail(form.getEmail())) {
             throw new RuntimeException("해당 이메일로 가입된 회원이 있습니다.");
         }
+
         Member member = new Member();
         member.setUsername(form.getUsername());
         member.setEmail(form.getEmail());
         member.setPassword(passwordEncoder.encode(form.getPassword()));
         member.setProfileImageUrl(form.getProfileImageUrl());
+        member.setIntroduction("한 줄 소개입니다. 자신을 멋있게 소개해보세요!");
+        member.setTotalLikes(0);
+        member.setTotalViews(0);
+
         return memberRepository.save(member);
     }
 
