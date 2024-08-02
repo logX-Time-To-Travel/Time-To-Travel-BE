@@ -32,7 +32,7 @@ public class InterestService {
         List<String> recentQueries = searchService.getRecentSearchQueries(memberId);
         List<Post> recommendedPosts = new ArrayList<>();
         for (String query : recentQueries) {
-            recommendedPosts.addAll(postRepository.findByTitleContainingOrContentContaining(query));
+            recommendedPosts.addAll(postRepository.findByTitleContainingOrContentDataContaining(query));
         }
         return postService.convertToResponseDTOs(recommendedPosts);
     }
