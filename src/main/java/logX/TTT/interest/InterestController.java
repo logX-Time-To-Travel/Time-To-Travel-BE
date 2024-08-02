@@ -1,6 +1,7 @@
 package logX.TTT.interest;
 
 import logX.TTT.post.Post;
+import logX.TTT.post.model.PostResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -17,8 +18,8 @@ public class InterestController {
     private InterestService interestService;
 
     @GetMapping("/{username}")
-    public ResponseEntity<List<Post>> getRecommendedPosts(@PathVariable String username) {
-        List<Post> recommendedPosts = interestService.getRecommendedPosts(username);
+    public ResponseEntity<List<PostResponseDTO>> getRecommendedPosts(@PathVariable String username) {
+        List<PostResponseDTO> recommendedPosts = interestService.getRecommendedPosts(username);
         return ResponseEntity.ok(recommendedPosts);
     }
 }
