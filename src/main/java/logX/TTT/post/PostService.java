@@ -86,6 +86,12 @@ public class PostService {
         );
     }
 
+    public List<PostResponseDTO> convertToResponseDTOs(List<Post> posts) {
+        return posts.stream()
+                .map(this::convertToResponseDTO)
+                .collect(Collectors.toList());
+    }
+
     public List<PostResponseDTO> getPostsByUsername(String username) {
         Member member = memberRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("회원이 존재하지 않습니다."));

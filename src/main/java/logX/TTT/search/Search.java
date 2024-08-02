@@ -3,6 +3,7 @@ package logX.TTT.search;
 import jakarta.persistence.*;
 import logX.TTT.member.Member;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -26,5 +27,6 @@ public class Search {
     private String query;
 
     @Column(name = "searched_at", nullable = false)
+    @CreationTimestamp
     private LocalDateTime searchedAt;
 }
