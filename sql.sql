@@ -5,10 +5,10 @@ CREATE TABLE member
     email             VARCHAR(255) NOT NULL,
     password          VARCHAR(255) NOT NULL,
     introduction      VARCHAR(255) DEFAULT '한 줄 소개입니다. 자신을 멋있게 소개해보세요!',
-    created_at        DATE         NOT NULL,
+    created_at        TIMESTAMP    NOT NULL,
     profile_image_url VARCHAR(255),
-    total_likes       INT DEFAULT 0,
-    total_views       INT DEFAULT 0
+    total_likes       INT          DEFAULT 0,
+    total_views       INT          DEFAULT 0
 );
 
 
