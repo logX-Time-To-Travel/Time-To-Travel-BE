@@ -77,9 +77,10 @@ CREATE TABLE views
 
 CREATE TABLE search_history
 (
-    id        INT AUTO_INCREMENT PRIMARY KEY,
-    member_id INT          NOT NULL,
-    query     VARCHAR(255) NOT NULL,
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    member_id   INT          NOT NULL,
+    query       VARCHAR(255) NOT NULL,
+    searched_at TIMESTAMP    NOT NULL,
     FOREIGN KEY (member_id) REFERENCES member (id)
 );
 
