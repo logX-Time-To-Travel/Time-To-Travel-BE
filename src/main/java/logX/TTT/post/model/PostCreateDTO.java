@@ -13,10 +13,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostCreateDTO {
-    private Long id;
     private Long memberId;
     private String title;
-    private List<ContentDTO> content;
+    private String content;
     private List<Location> locations;
     private LocalDateTime createdAt;
 }
