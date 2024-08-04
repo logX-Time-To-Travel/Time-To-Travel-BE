@@ -2,7 +2,6 @@ package logX.TTT.post;
 
 import jakarta.persistence.*;
 import logX.TTT.comment.Comment;
-import logX.TTT.content.Content;
 import logX.TTT.likes.Likes;
 import logX.TTT.location.Location;
 import logX.TTT.member.Member;

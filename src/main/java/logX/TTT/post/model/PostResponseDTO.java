@@ -1,6 +1,5 @@
 package logX.TTT.post.model;
 
-import logX.TTT.content.model.ContentDTO;
 import logX.TTT.likes.Likes;
 import logX.TTT.location.Location;
 import logX.TTT.views.Views;

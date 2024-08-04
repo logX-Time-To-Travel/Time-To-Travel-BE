@@ -1,7 +1,5 @@
 package logX.TTT.post;
 
-import logX.TTT.content.Content;
-import logX.TTT.content.model.ContentDTO;
 import logX.TTT.member.Member;
 import logX.TTT.member.MemberRepository;
 import logX.TTT.post.model.PostCreateDTO;

@@ -1,6 +1,5 @@
 package logX.TTT.post.model;
 
-import logX.TTT.content.model.ContentDTO;
 import logX.TTT.location.Location;
 import lombok.AllArgsConstructor;
 import lombok.Data;
