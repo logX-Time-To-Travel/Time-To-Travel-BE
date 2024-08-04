@@ -27,18 +27,11 @@ public class PostService {
 
         Post post = Post.builder()
                 .title(postCreateDTO.getTitle())
+                .content(postCreateDTO.getContent())
                 .member(member)
                 .locations(postCreateDTO.getLocations())
                 .build();
 
-        List<Content> contents = postCreateDTO.getContent().stream()
-                .map(contentDTO -> Content.builder()
-                        .data(contentDTO.getData())
-                        .post(post)
-                        .build())
-                .collect(Collectors.toList());
-
-        post.setContentList(contents);
         Post savedPost = postRepository.save(post);
         return convertToResponseDTO(savedPost);
     }
