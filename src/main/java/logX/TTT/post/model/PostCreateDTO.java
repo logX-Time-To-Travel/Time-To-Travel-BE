@@ -1,6 +1,7 @@
 package logX.TTT.post.model;
 
-import logX.TTT.location.Location;
+
+import logX.TTT.location.model.LocationDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,5 +15,5 @@ public class PostCreateDTO {
     private Long memberId;
     private String title;
     private String content;
-    private List<Location> locations;
+    private List<LocationDTO> locations;
 }

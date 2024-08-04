@@ -1,7 +1,7 @@
 package logX.TTT.post.model;
 
 import logX.TTT.likes.Likes;
-import logX.TTT.location.Location;
+import logX.TTT.location.model.LocationDTO;
 import logX.TTT.views.Views;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +19,7 @@ public class PostResponseDTO {
     private Long id;
     private String title;
     private String data;
-    private List<Location> locations;
+    private List<LocationDTO> locations;
     private List<Likes> likes;
     private List<Views> views;
     private LocalDateTime createdAt;
