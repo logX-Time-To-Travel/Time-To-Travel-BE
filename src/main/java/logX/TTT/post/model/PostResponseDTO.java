@@ -18,7 +18,7 @@ import java.util.List;
 public class PostResponseDTO {
     private Long id;
     private String title;
-    private List<ContentDTO> data;
+    private String data;
     private List<Location> locations;
     private List<Likes> likes;
     private List<Views> views;

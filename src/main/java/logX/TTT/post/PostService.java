@@ -45,13 +45,8 @@ public class PostService {
                 .orElseThrow(() -> new IllegalArgumentException("포스트 ID를 찾을 수 없습니다."));
 
         post.setTitle(postCreateDTO.getTitle());
+        post.setContent(postCreateDTO.getContent());
         post.setLocations(postCreateDTO.getLocations());
-        post.setContentList(postCreateDTO.getContent().stream()
-                .map(contentDTO -> Content.builder()
-                        .data(contentDTO.getData())
-                        .post(post)
-                        .build())
-                .collect(Collectors.toList()));
 
         Post updatedPost = postRepository.save(post);
         return convertToResponseDTO(updatedPost);
@@ -67,9 +62,7 @@ public class PostService {
         return new PostResponseDTO(
                 post.getId(),
                 post.getTitle(),
-                post.getContentList().stream()
-                        .map(content -> new ContentDTO(content.getId(), content.getData()))
-                        .collect(Collectors.toList()),
+                post.getContent(),
                 post.getLocations(),
                 post.getLikes(),
                 post.getViews(),
@@ -90,16 +83,7 @@ public class PostService {
         List<Post> posts = postRepository.findByMember(member);
 
         return posts.stream()
-                .map(post -> new PostResponseDTO(
-                        post.getId(),
-                        post.getTitle(),
-                        post.getContentList().stream()
-                                .map(content -> new ContentDTO(content.getId(), content.getData()))
-                                .collect(Collectors.toList()),
-                        post.getLocations(),
-                        post.getLikes(),
-                        post.getViews(),
-                        post.getCreatedAt()))
+                .map(this::convertToResponseDTO)
                 .collect(Collectors.toList());
     }
 }
