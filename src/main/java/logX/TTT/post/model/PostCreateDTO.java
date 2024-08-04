@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -16,5 +15,4 @@ public class PostCreateDTO {
     private String title;
     private String content;
     private List<Location> locations;
-    private LocalDateTime createdAt;
 }
