@@ -15,9 +15,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findByUsername(String username);
 
 
-    @Query("SELECT DISTINCT p FROM Post p LEFT JOIN p.contentList c " +
-            "WHERE p.title LIKE %:keyword% OR c.data LIKE %:query%")
-    List<Post> findByTitleContainingOrContentDataContaining(@Param("query") String keyword);
+    @Query("SELECT p FROM Post p WHERE p.title LIKE %:keyword% OR p.content LIKE %:keyword%")
+    List<Post> findByTitleContainingOrContentDataContaining(@Param("keyword") String keyword);
 
     List<Post> findByMember(Member member);
 }

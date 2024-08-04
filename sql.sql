@@ -8,7 +8,9 @@ CREATE TABLE member
     created_at        TIMESTAMP    NOT NULL,
     profile_image_url VARCHAR(255),
     total_likes       INT          DEFAULT 0,
-    total_views       INT          DEFAULT 0
+    total_views       INT          DEFAULT 0,
+    UNIQUE (username),
+    UNIQUE (email)
 );
 
 
@@ -17,17 +19,9 @@ CREATE TABLE post
     id         INT AUTO_INCREMENT PRIMARY KEY,
     member_id  INT,
     title      TEXT      NOT NULL,
+    content    LONGTEXT  NOT NULL,
     created_at TIMESTAMP NOT NULL,
     FOREIGN KEY (member_id) REFERENCES member (id)
-);
-
-
-CREATE TABLE content
-(
-    id      INT AUTO_INCREMENT PRIMARY KEY,
-    post_id INT          NOT NULL,
-    data    TEXT         NOT NULL,
-    FOREIGN KEY (post_id) REFERENCES post (id)
 );
 
 

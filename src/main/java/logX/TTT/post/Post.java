@@ -2,7 +2,6 @@ package logX.TTT.post;
 
 import jakarta.persistence.*;
 import logX.TTT.comment.Comment;
-import logX.TTT.content.Content;
 import logX.TTT.likes.Likes;
 import logX.TTT.location.Location;
 import logX.TTT.member.Member;
@@ -39,8 +38,8 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Content> contentList;
+    @Column(nullable = false)
+    private String content;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Location> locations;
