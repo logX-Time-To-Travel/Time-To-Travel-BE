@@ -1,3 +1,6 @@
+CREATE DATABASE ttt;
+use ttt;
+
 CREATE TABLE member
 (
     id                INT AUTO_INCREMENT PRIMARY KEY,
