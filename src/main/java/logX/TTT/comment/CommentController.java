@@ -41,10 +41,10 @@ public class CommentController {
     }
 
     // 댓글 수정
-    @PutMapping("/{id}")
-    public ResponseEntity<CommentResponseDTO> updateComment(@PathVariable Long id, @RequestBody CommentCreateDTO commentDTO) {
+    @PutMapping("/{commentId}")
+    public ResponseEntity<CommentResponseDTO> updateComment(@PathVariable Long commentId, @RequestBody CommentCreateDTO commentDTO) {
         try {
-            CommentResponseDTO updatedComment = commentService.updateComment(id, commentDTO.getContent());
+            CommentResponseDTO updatedComment = commentService.updateComment(commentId, commentDTO.getContent());
             return ResponseEntity.ok(updatedComment);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -52,10 +52,10 @@ public class CommentController {
     }
 
     // 댓글 삭제
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteComment(@PathVariable Long id) {
+    @DeleteMapping("/{commentId}")
+    public ResponseEntity<Void> deleteComment(@PathVariable Long commentId) {
         try {
-            commentService.deleteComment(id);
+            commentService.deleteComment(commentId);
             return ResponseEntity.ok().build();
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

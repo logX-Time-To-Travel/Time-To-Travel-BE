@@ -40,8 +40,8 @@ public class CommentService {
         return convertToDTO(savedComment);
     }
 
-    public CommentResponseDTO getComment(Long id) {
-        Comment comment = commentRepository.findById(id)
+    public CommentResponseDTO getComment(Long commentId) {
+        Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid comment ID"));
         return convertToDTO(comment);
     }
@@ -51,8 +51,8 @@ public class CommentService {
         return comments.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
-    public CommentResponseDTO updateComment(Long id, String content) {
-        Comment comment = commentRepository.findById(id)
+    public CommentResponseDTO updateComment(Long commentId, String content) {
+        Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid comment ID"));
 
         comment.setContent(content);
@@ -60,8 +60,8 @@ public class CommentService {
         return convertToDTO(updatedComment);
     }
 
-    public void deleteComment(Long id) {
-        Comment comment = commentRepository.findById(id)
+    public void deleteComment(Long commentId) {
+        Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid comment ID"));
 
         commentRepository.delete(comment);
