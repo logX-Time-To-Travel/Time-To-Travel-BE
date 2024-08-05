@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface LocationRepository extends JpaRepository<Location, Long> {
     @Query("SELECT l FROM Location l " +
-            "WHERE l.latitude BETWEEN :southWestLat AND :northEastLat " +
-            "AND l.longitude BETWEEN :southWestLng AND :northEastLng")
+            "WHERE l.latitude >= :southWestLat AND l.latitude <= :northEastLat " +
+            "AND l.longitude >= :southWestLng AND l.longitude <= :northEastLng")
     List<Location> findByLocationRange(
             @Param("southWestLat") double southWestLat,
             @Param("southWestLng") double southWestLng,
