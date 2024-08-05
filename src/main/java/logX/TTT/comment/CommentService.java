@@ -1,6 +1,7 @@
 package logX.TTT.comment;
 
-import logX.TTT.comment.model.CommentDTO;
+
+import logX.TTT.comment.model.CommentResponseDTO;
 import logX.TTT.member.Member;
 import logX.TTT.member.MemberRepository;
 import logX.TTT.post.Post;
@@ -23,7 +24,7 @@ public class CommentService {
     @Autowired
     private MemberRepository memberRepository;
 
-    public CommentDTO createComment(Long postId, Long memberId, String content) {
+    public CommentResponseDTO createComment(Long postId, Long memberId, String content) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid post ID"));
         Member member = memberRepository.findById(memberId)
@@ -39,18 +40,18 @@ public class CommentService {
         return convertToDTO(savedComment);
     }
 
-    public CommentDTO getComment(Long id) {
+    public CommentResponseDTO getComment(Long id) {
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid comment ID"));
         return convertToDTO(comment);
     }
 
-    public List<CommentDTO> getCommentsByPost(Long postId) {
+    public List<CommentResponseDTO> getCommentsByPost(Long postId) {
         List<Comment> comments = commentRepository.findByPostId(postId);
         return comments.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
-    public CommentDTO updateComment(Long id, String content) {
+    public CommentResponseDTO updateComment(Long id, String content) {
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid comment ID"));
 
@@ -66,12 +67,13 @@ public class CommentService {
         commentRepository.delete(comment);
     }
 
-    private CommentDTO convertToDTO(Comment comment) {
-        return new CommentDTO(
+    private CommentResponseDTO convertToDTO(Comment comment) {
+        return new CommentResponseDTO(
                 comment.getId(),
                 comment.getPost().getId(),
-                comment.getMember().getId(),
+                comment.getMember().getUsername(),
                 comment.getContent(),
+                comment.getMember().getProfileImageUrl(),
                 comment.getCreatedAt()
         );
     }
