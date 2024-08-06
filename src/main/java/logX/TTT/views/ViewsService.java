@@ -2,10 +2,12 @@ package logX.TTT.views;
 
 import logX.TTT.member.Member;
 import logX.TTT.post.Post;
+import logX.TTT.post.model.PostSummaryDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ViewsService {
@@ -17,22 +19,21 @@ public class ViewsService {
         this.viewsRepository = viewsRepository;
     }
 
-    // 조회수 추가
-    public Views addView(Post post, Member member) {
-        Views view = Views.builder()
-                .post(post)
-                .member(member)
-                .build();
-        return viewsRepository.save(view);
-    }
+    // 한 사용자가 작성한 모든 게시물의 조회수 가져오기
+    public List<PostSummaryDTO> getPostViewsByMember(Member member) {
+        List<Post> posts = member.getPosts(); // Member의 게시물 목록 가져오기
 
-    // 특정 게시물에 대한 조회수 목록 조회
-    public List<Views> getViewsByPost(Post post) {
-        return viewsRepository.findByPost(post);
-    }
+        return posts.stream().map(post -> {
+            int viewCount = (int) viewsRepository.findByPost(post).size();
 
-    // 특정 사용자가 조회한 목록 조회
-    public List<Views> getViewsByMember(Member member) {
-        return viewsRepository.findByMember(member);
+            return new PostSummaryDTO(
+                    post.getId(),
+                    post.getTitle(),
+                    0, // 좋아요 수는 0으로 설정 (나중에 LikesService와 통합)
+                    viewCount,
+                    post.getImageUrl(),
+                    post.getCreatedAt() // 작성한 날짜
+            );
+        }).collect(Collectors.toList());
     }
 }

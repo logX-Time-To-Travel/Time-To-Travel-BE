@@ -1,14 +1,19 @@
 package logX.TTT.member;
 
+import logX.TTT.likes.LikesRepository;
 import logX.TTT.member.model.LoginDTO;
 import logX.TTT.member.model.SignupDTO;
 import logX.TTT.member.model.UpdateMemberDTO;
 import logX.TTT.member.model.UserInfoDTO;
+import logX.TTT.post.Post;
+import logX.TTT.post.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,6 +22,8 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final PostRepository postRepository;
+
 
     public Member login(LoginDTO form) {
         Optional<Member> optionalMember = memberRepository.findByEmail(form.getEmail());
@@ -44,6 +51,11 @@ public class MemberService {
         member.setTotalViews(0);
 
         return memberRepository.save(member);
+    }
+
+    public Member getMemberByUsername(String username) {
+        return memberRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("해당 회원이 없습니다."));
     }
 
     public Member getMemberById(Long id) {
@@ -101,5 +113,10 @@ public class MemberService {
                 member.getProfileImageUrl(),
                 member.getCreatedAt()
         );
+    }
+
+    // Member에 해당하는 게시물 목록을 반환
+    public List<Post> getPostsByMember(Member member) {
+        return postRepository.findByMember(member);
     }
 }
