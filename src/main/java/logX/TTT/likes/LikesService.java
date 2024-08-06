@@ -30,7 +30,7 @@ public class LikesService {
                     post.getId(),
                     post.getTitle(),
                     likeCount,
-                    0, // 조회수는 0으로 설정 (나중에 ViewsService와 통합)
+                    0, // 조회수는 0으로 임의설정 (나중에 'viewCount,'로 변경해서 통합해야함)
                     post.getImageUrl(),
                     post.getCreatedAt() // 작성한 날짜
             );

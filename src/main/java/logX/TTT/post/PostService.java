@@ -9,6 +9,7 @@ import logX.TTT.post.model.PostResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,6 +39,7 @@ public class PostService {
                 .content(postCreateDTO.getContent())
                 .member(member)
                 .locations(locations)
+                .views(new ArrayList<>())
                 .build();
 
         locations.forEach(location -> location.setPost(post));
@@ -49,6 +51,10 @@ public class PostService {
     public PostResponseDTO getPost(Long id) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("포스트 ID를 찾을 수 없습니다."));
+
+        post.addView();
+        postRepository.save(post);
+
         return convertToResponseDTO(post);
     }
 

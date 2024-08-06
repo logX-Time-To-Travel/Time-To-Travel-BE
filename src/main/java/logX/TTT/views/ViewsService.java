@@ -29,7 +29,7 @@ public class ViewsService {
             return new PostSummaryDTO(
                     post.getId(),
                     post.getTitle(),
-                    0, // 좋아요 수는 0으로 설정 (나중에 LikesService와 통합)
+                    0, // 좋아요 수는 0으로 설정 (나중에 'likeCount,'로 변경해서 통합해야함)
                     viewCount,
                     post.getImageUrl(),
                     post.getCreatedAt() // 작성한 날짜
