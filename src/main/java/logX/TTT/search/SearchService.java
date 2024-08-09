@@ -2,6 +2,7 @@ package logX.TTT.search;
 
 import logX.TTT.member.Member;
 import logX.TTT.member.MemberRepository;
+import logX.TTT.search.model.SearchDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,10 +31,10 @@ public class SearchService {
         }
     }
 
-    public List<String> getRecentSearchQueries(Long memberId) {
+    public List<SearchDTO> getRecentSearchQueries(Long memberId) {
         List<Search> searchHistories = searchHistoryRepository.findTop10ByMemberIdOrderBySearchedAtDesc(memberId);
         return searchHistories.stream()
-                .map(Search::getQuery)
+                .map(search -> new SearchDTO(search.getId(), search.getQuery()))
                 .collect(Collectors.toList());
     }
 }
