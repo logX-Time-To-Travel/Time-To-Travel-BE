@@ -10,5 +10,5 @@ import java.util.List;
 public interface SearchRepository extends JpaRepository<Search, Long> {
     List<Search> findTop10ByMemberIdOrderBySearchedAtDesc(Long memberId);
 
-    void deleteByMemberIdAndId(Long memberId, Long id);
+    void deleteByMemberIdAndSearchedHistoryId(Long memberId, Long searchedHistoryId);
 }

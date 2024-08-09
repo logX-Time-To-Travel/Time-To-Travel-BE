@@ -33,10 +33,10 @@ public class SearchController {
         return ResponseEntity.ok(recentQueries);
     }
 
-    @DeleteMapping("/{username}/{id}")
-    public ResponseEntity<Void> deleteQuery(@PathVariable String username, @PathVariable Long id) {
+    @DeleteMapping("/{username}/{searchedHistoryId}")
+    public ResponseEntity<Void> deleteQuery(@PathVariable String username, @PathVariable Long searchedHistoryId) {
         Long memberId = memberService.getMemberIdByUsername(username);
-        searchService.deleteQuery(memberId, id);
+        searchService.deleteQuery(memberId, searchedHistoryId);
         return ResponseEntity.ok().build();
     }
 
