@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class Search {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long searchedHistoryId;
 
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
