@@ -33,4 +33,11 @@ public class SearchController {
         return ResponseEntity.ok(recentQueries);
     }
 
+    @DeleteMapping("/{username}/{id}")
+    public ResponseEntity<Void> deleteQuery(@PathVariable String username, @PathVariable Long id) {
+        Long memberId = memberService.getMemberIdByUsername(username);
+        searchService.deleteQuery(memberId, id);
+        return ResponseEntity.ok().build();
+    }
+
 }

@@ -37,4 +37,8 @@ public class SearchService {
                 .map(search -> new SearchDTO(search.getId(), search.getQuery()))
                 .collect(Collectors.toList());
     }
+
+    public void deleteQuery(Long memberId, Long id) {
+        searchHistoryRepository.deleteByMemberIdAndId(memberId, id);
+    }
 }
