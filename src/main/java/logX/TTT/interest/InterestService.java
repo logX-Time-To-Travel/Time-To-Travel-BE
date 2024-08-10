@@ -6,6 +6,7 @@ import logX.TTT.post.PostRepository;
 import logX.TTT.post.PostService;
 import logX.TTT.post.model.PostResponseDTO;
 import logX.TTT.search.SearchService;
+import logX.TTT.search.model.SearchDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,10 +30,10 @@ public class InterestService {
 
     public List<PostResponseDTO> getRecommendedPosts(String username) {
         Long memberId = memberService.getMemberIdByUsername(username);
-        List<String> recentQueries = searchService.getRecentSearchQueries(memberId);
+        List<SearchDTO> recentQueries = searchService.getRecentSearchQueries(memberId);
         List<Post> recommendedPosts = new ArrayList<>();
-        for (String query : recentQueries) {
-            recommendedPosts.addAll(postRepository.findByTitleContainingOrContentDataContaining(query));
+        for (SearchDTO searchDTO : recentQueries) {
+            recommendedPosts.addAll(postRepository.findByTitleContainingOrContentDataContaining(searchDTO.getQuery()));
         }
         return postService.convertToResponseDTOs(recommendedPosts);
     }
