@@ -34,11 +34,11 @@ public class SearchService {
     public List<SearchDTO> getRecentSearchQueries(Long memberId) {
         List<Search> searchHistories = searchHistoryRepository.findTop10ByMemberIdOrderBySearchedAtDesc(memberId);
         return searchHistories.stream()
-                .map(search -> new SearchDTO(search.getSearchedHistoryId(), search.getQuery()))
+                .map(search -> new SearchDTO(search.getSearchHistoryId(), search.getQuery()))
                 .collect(Collectors.toList());
     }
 
     public void deleteQuery(Long memberId, Long searchedHistoryId) {
-        searchHistoryRepository.deleteByMemberIdAndSearchedHistoryId(memberId, searchedHistoryId);
+        searchHistoryRepository.deleteByMemberIdAndSearchHistoryId(memberId, searchedHistoryId);
     }
 }

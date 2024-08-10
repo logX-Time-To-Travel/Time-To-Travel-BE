@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SearchDTO {
-    private Long searchedHistoryId;
+    private Long searchHistoryId;
     private String query;
 }
