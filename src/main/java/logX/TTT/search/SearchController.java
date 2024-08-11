@@ -1,6 +1,7 @@
 package logX.TTT.search;
 
 import logX.TTT.member.MemberService;
+import logX.TTT.search.model.SearchDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -26,10 +27,17 @@ public class SearchController {
     }
 
     @GetMapping("/{username}")
-    public ResponseEntity<List<String>> getRecentSearchQueries(@PathVariable String username) {
+    public ResponseEntity<List<SearchDTO>> getRecentSearchQueries(@PathVariable String username) {
         Long memberId = memberService.getMemberIdByUsername(username);
-        List<String> recentQueries = searchService.getRecentSearchQueries(memberId);
+        List<SearchDTO> recentQueries = searchService.getRecentSearchQueries(memberId);
         return ResponseEntity.ok(recentQueries);
+    }
+
+    @DeleteMapping("/{username}/{searchHistoryId}")
+    public ResponseEntity<Void> deleteQuery(@PathVariable String username, @PathVariable Long searchHistoryId) {
+        Long memberId = memberService.getMemberIdByUsername(username);
+        searchService.deleteQuery(memberId, searchHistoryId);
+        return ResponseEntity.ok().build();
     }
 
 }
