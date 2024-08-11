@@ -101,7 +101,7 @@ public class MemberController {
         }
     }
 
-    @GetMapping("/{username}/posts/summary")
+    @GetMapping("/{username}/posts/summary") // 엔드포인트 수정할 예정
     public ResponseEntity<List<PostSummaryDTO>> getPostSummary(@PathVariable String username) {
         Member member = memberService.getMemberByUsername(username); // 사용자를 username으로 조회
         if (member == null) {
