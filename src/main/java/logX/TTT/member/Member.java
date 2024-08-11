@@ -2,6 +2,7 @@ package logX.TTT.member;
 
 import jakarta.persistence.*;
 import logX.TTT.likes.Likes;
+import logX.TTT.post.Post;
 import logX.TTT.views.Views;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -51,4 +52,11 @@ public class Member {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Views> views;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> posts;
+
+    public List<Post> getPosts() {
+        return posts;
+    }
 }

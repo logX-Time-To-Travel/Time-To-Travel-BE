@@ -22,5 +22,6 @@ public class PostResponseDTO {
     private List<LocationDTO> locations;
     private List<Likes> likes;
     private List<Views> views;
+    private int viewCount;
     private LocalDateTime createdAt;
 }

@@ -10,6 +10,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -48,5 +49,9 @@ public class Post {
     private List<Likes> likes;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Views> views;
+    private List<Views> views = new ArrayList<>();
+
+    @Column(name = "image_url")
+    private String imageUrl;
+
 }

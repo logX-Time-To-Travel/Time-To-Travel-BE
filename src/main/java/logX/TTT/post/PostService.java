@@ -6,9 +6,11 @@ import logX.TTT.member.Member;
 import logX.TTT.member.MemberRepository;
 import logX.TTT.post.model.PostCreateDTO;
 import logX.TTT.post.model.PostResponseDTO;
+import logX.TTT.views.Views;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,6 +40,7 @@ public class PostService {
                 .content(postCreateDTO.getContent())
                 .member(member)
                 .locations(locations)
+                .views(new ArrayList<>()) // 초기화
                 .build();
 
         locations.forEach(location -> location.setPost(post));
@@ -49,6 +52,9 @@ public class PostService {
     public PostResponseDTO getPost(Long id) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("포스트 ID를 찾을 수 없습니다."));
+
+        incrementViewCount(post); // 조회수 증가 메소드 호출
+
         return convertToResponseDTO(post);
     }
 
@@ -80,6 +86,13 @@ public class PostService {
         postRepository.delete(post);
     }
 
+    private void incrementViewCount(Post post) {
+        // 조회수 증가 로직 구현
+        Views view = new Views(); // Views 객체 생성
+        post.getViews().add(view); // 조회수 리스트에 추가
+        postRepository.save(post); // 변경된 상태를 저장
+    }
+
     private PostResponseDTO convertToResponseDTO(Post post) {
         List<LocationDTO> locationDTOs = post.getLocations().stream()
                 .map(location -> new LocationDTO(location.getName(), location.getLatitude(), location.getLongitude()))
@@ -88,10 +101,11 @@ public class PostService {
         return new PostResponseDTO(
                 post.getId(),
                 post.getTitle(),
-                post.getContent(),
+                post.getContent(), // 'data' 필드에 맞는 데이터 제공
                 locationDTOs,
                 post.getLikes(),
-                post.getViews(),
+                post.getViews(), // Views 리스트
+                post.getViews().size(), // 조회수 개수 반환
                 post.getCreatedAt()
         );
     }
@@ -113,3 +127,4 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 }
+
