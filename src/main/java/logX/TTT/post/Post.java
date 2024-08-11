@@ -54,15 +54,4 @@ public class Post {
     @Column(name = "image_url")
     private String imageUrl;
 
-    public void addView() {
-        if (this.views == null) {
-            this.views = new ArrayList<>();
-        }
-        Views view = new Views();
-        this.views.add(view);
-    }
-
-    public int getViewCount() {
-        return this.views != null ? this.views.size() : 0;
-    }
 }
