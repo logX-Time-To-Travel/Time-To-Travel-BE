@@ -32,7 +32,7 @@ public class LocationService {
                                     post.getLikes().size(), // 좋아요 수
                                     post.getViews().size(), // 조회수
                                     post.getImageUrl(),
-                                    post.getCreatedAt()
+                                    post.getCreatedAt() // 추가
                             ))
                             .collect(Collectors.toList());
                     markerDTO.setPosts(postSummaries);
