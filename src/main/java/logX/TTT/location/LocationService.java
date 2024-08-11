@@ -29,9 +29,10 @@ public class LocationService {
                             .map(post -> new PostSummaryDTO(
                                     post.getId(),
                                     post.getTitle(),
-                                    20, // Entity 미완성 - 추후 교체: post.getLikeCount(),
-                                    40, // Entity 미완성 - 추후 교체: post.getViewCount(),
-                                    "image/image.jpg" // Entity 미완성 - 추후 교체: post.getImageUrl()
+                                    post.getLikes().size(), // 좋아요 수
+                                    post.getViews().size(), // 조회수
+                                    post.getImageUrl(),
+                                    post.getCreatedAt()
                             ))
                             .collect(Collectors.toList());
                     markerDTO.setPosts(postSummaries);
