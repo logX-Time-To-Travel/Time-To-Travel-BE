@@ -19,21 +19,15 @@ public class LikesService {
         this.likesRepository = likesRepository;
     }
 
-    // 한 사용자가 작성한 모든 게시물의 좋아요 수 가져오기
-    public List<PostSummaryDTO> getPostLikesByMember(Member member) {
+    // 한 사용자가 작성한 모든 게시물의 총 좋아요 수 가져오기
+    public int getTotalPostLikesByMember(Member member) {
         List<Post> posts = member.getPosts(); // Member의 게시물 목록 가져오기
 
-        return posts.stream().map(post -> {
-            int likeCount = (int) likesRepository.findByPost(post).size();
+        // 모든 게시물의 좋아요 수를 합산
+        int totalLikeCount = posts.stream()
+                .mapToInt(post -> likesRepository.findByPost(post).size())
+                .sum();
 
-            return new PostSummaryDTO(
-                    post.getId(),
-                    post.getTitle(),
-                    likeCount,
-                    0, // 조회수는 0으로 임의설정 (나중에 'viewCount,'로 변경해서 통합해야함)
-                    post.getImageUrl(),
-                    post.getCreatedAt() // 작성한 날짜
-            );
-        }).collect(Collectors.toList());
+        return totalLikeCount; // 총 좋아요 수 반환
     }
 }

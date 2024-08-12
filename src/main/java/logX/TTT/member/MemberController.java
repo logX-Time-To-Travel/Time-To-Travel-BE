@@ -102,23 +102,26 @@ public class MemberController {
     }
 
     @GetMapping("/{username}/posts/summary") // 엔드포인트 수정할 예정
-    public ResponseEntity<List<PostSummaryDTO>> getPostSummary(@PathVariable String username) {
+    public ResponseEntity<PostSummaryDTO> getPostSummary(@PathVariable String username) {
         Member member = memberService.getMemberByUsername(username); // 사용자를 username으로 조회
         if (member == null) {
             return ResponseEntity.status(404).body(null); // 사용자 없음
         }
 
-        List<PostSummaryDTO> likesSummary = likesService.getPostLikesByMember(member);
-        List<PostSummaryDTO> viewsSummary = viewsService.getPostViewsByMember(member);
+        int totalLikeCount = likesService.getTotalPostLikesByMember(member); // 총 좋아요 수
+        int totalViewCount = viewsService.getTotalPostViewsByMember(member); // 총 조회수
 
-        // 조회수와 좋아요 수 통합
-        for (PostSummaryDTO post : likesSummary) {
-            viewsSummary.stream()
-                    .filter(v -> v.getPostId().equals(post.getPostId()))
-                    .findFirst()
-                    .ifPresent(v -> post.setViewCount(v.getViewCount())); // 조회수 설정
-        }
+        // 새로운 PostSummaryDTO 객체 생성 (null값들은 필요에 따라 변경 가능)
+        PostSummaryDTO summary = new PostSummaryDTO(
+                null,
+                null,
+                totalLikeCount,
+                totalViewCount,
+                null,
+                null
+        );
 
-        return ResponseEntity.ok(likesSummary);
+        return ResponseEntity.ok(summary); // 통합된 정보를 반환
     }
+
 }
