@@ -42,6 +42,9 @@ public class Post {
     @Column(nullable = false)
     private String content;
 
+    @Column
+    private String thumbnail;
+
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Location> locations;
 

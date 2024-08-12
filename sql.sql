@@ -21,9 +21,10 @@ CREATE TABLE post
 (
     id         INT AUTO_INCREMENT PRIMARY KEY,
     member_id  INT,
-    title      TEXT      NOT NULL,
-    content    LONGTEXT  NOT NULL,
-    created_at TIMESTAMP NOT NULL,
+    title      TEXT         NOT NULL,
+    content    LONGTEXT     NOT NULL,
+    thumbnail  VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP    NOT NULL,
     FOREIGN KEY (member_id) REFERENCES member (id)
 );
 
