@@ -38,6 +38,7 @@ public class PostService {
         Post post = Post.builder()
                 .title(postCreateDTO.getTitle())
                 .content(postCreateDTO.getContent())
+                .thumbnail(postCreateDTO.getThumbnail())
                 .member(member)
                 .locations(locations)
                 .views(new ArrayList<>()) // 초기화
@@ -64,6 +65,7 @@ public class PostService {
 
         post.setTitle(postCreateDTO.getTitle());
         post.setContent(postCreateDTO.getContent());
+        post.setThumbnail(postCreateDTO.getThumbnail());
 
         List<Location> locations = postCreateDTO.getLocations().stream()
                 .map(dto -> Location.builder()
