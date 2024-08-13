@@ -3,6 +3,7 @@ package logX.TTT.likes;
 import logX.TTT.member.Member;
 import logX.TTT.post.Post;
 import logX.TTT.post.model.PostSummaryDTO;
+import logX.TTT.views.ViewsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,26 +14,43 @@ import java.util.stream.Collectors;
 public class LikesService {
 
     private final LikesRepository likesRepository;
+    private final ViewsRepository viewsRepository;
 
     @Autowired
-    public LikesService(LikesRepository likesRepository) {
+    public LikesService(LikesRepository likesRepository, ViewsRepository viewsRepository) {
         this.likesRepository = likesRepository;
+        this.viewsRepository = viewsRepository;
     }
 
-    // 한 사용자가 작성한 모든 게시물의 좋아요 수 가져오기
-    public List<PostSummaryDTO> getPostLikesByMember(Member member) {
+    // 한 사용자가 작성한 모든 게시물의 총 좋아요 수 가져오기
+    public int getTotalPostLikesByMember(Member member) {
         List<Post> posts = member.getPosts(); // Member의 게시물 목록 가져오기
 
-        return posts.stream().map(post -> {
-            int likeCount = (int) likesRepository.findByPost(post).size();
+        // 모든 게시물의 좋아요 수를 합산
+        int totalLikeCount = posts.stream()
+                .mapToInt(post -> likesRepository.findByPost(post).size())
+                .sum();
 
+        return totalLikeCount; // 총 좋아요 수 반환
+    }
+
+    // 사용자가 좋아요한 게시물 목록 반환
+    public List<PostSummaryDTO> getLikedPostsByMember(Member member) {
+        List<Likes> likedLikes = likesRepository.findByMember(member); // 사용자가 좋아요한 Likes 목록 조회
+
+        return likedLikes.stream().map(like -> {
+            Post likedPost = like.getPost();
+            int likeCount = likesRepository.findByPost(likedPost).size(); // 해당 게시물의 좋아요 수
+            int viewCount = viewsRepository.findByPost(likedPost).size(); // 해당 게시물의 조회수
+
+            // PostSummaryDTO 생성
             return new PostSummaryDTO(
-                    post.getId(),
-                    post.getTitle(),
+                    likedPost.getId(),
+                    likedPost.getTitle(),
                     likeCount,
-                    0, // 조회수는 0으로 임의설정 (나중에 'viewCount,'로 변경해서 통합해야함)
-                    post.getImageUrl(),
-                    post.getCreatedAt() // 작성한 날짜
+                    viewCount,
+                    likedPost.getImageUrl(),
+                    likedPost.getCreatedAt()
             );
         }).collect(Collectors.toList());
     }

@@ -11,11 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-
 @RestController
 @RequestMapping("/member")
 @RequiredArgsConstructor
@@ -87,8 +82,22 @@ public class MemberController {
 
     @GetMapping("/{username}")
     public ResponseEntity<UserInfoDTO> showUserInfo(@PathVariable String username) {
+        Member member = memberService.getMemberByUsername(username); // 사용자를 username으로 조회
+        if (member == null) {
+            return ResponseEntity.status(404).body(null); // 사용자 없음
+        }
+
+        // 사용자 정보 조회
         UserInfoDTO userInfo = memberService.getUserInfoByUsername(username);
-        return ResponseEntity.ok(userInfo);
+
+        // 총 좋아요 수 및 총 조회수 계산
+        int totalLikeCount = likesService.getTotalPostLikesByMember(member); // 총 좋아요 수
+        int totalViewCount = viewsService.getTotalPostViewsByMember(member); // 총 조회수
+
+        userInfo.setTotalLikeCount(totalLikeCount);
+        userInfo.setTotalViewCount(totalViewCount);
+
+        return ResponseEntity.ok(userInfo); // 사용자 정보와 통합된 정보를 반환
     }
 
     @PutMapping("/{username}")
@@ -99,26 +108,5 @@ public class MemberController {
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).build();
         }
-    }
-
-    @GetMapping("/{username}/posts/summary") // 엔드포인트 수정할 예정
-    public ResponseEntity<List<PostSummaryDTO>> getPostSummary(@PathVariable String username) {
-        Member member = memberService.getMemberByUsername(username); // 사용자를 username으로 조회
-        if (member == null) {
-            return ResponseEntity.status(404).body(null); // 사용자 없음
-        }
-
-        List<PostSummaryDTO> likesSummary = likesService.getPostLikesByMember(member);
-        List<PostSummaryDTO> viewsSummary = viewsService.getPostViewsByMember(member);
-
-        // 조회수와 좋아요 수 통합
-        for (PostSummaryDTO post : likesSummary) {
-            viewsSummary.stream()
-                    .filter(v -> v.getPostId().equals(post.getPostId()))
-                    .findFirst()
-                    .ifPresent(v -> post.setViewCount(v.getViewCount())); // 조회수 설정
-        }
-
-        return ResponseEntity.ok(likesSummary);
     }
 }

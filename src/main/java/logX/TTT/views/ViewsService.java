@@ -19,21 +19,15 @@ public class ViewsService {
         this.viewsRepository = viewsRepository;
     }
 
-    // 한 사용자가 작성한 모든 게시물의 조회수 가져오기
-    public List<PostSummaryDTO> getPostViewsByMember(Member member) {
+    // 한 사용자가 작성한 모든 게시물의 총 조회수 가져오기
+    public int getTotalPostViewsByMember(Member member) {
         List<Post> posts = member.getPosts(); // Member의 게시물 목록 가져오기
 
-        return posts.stream().map(post -> {
-            int viewCount = (int) viewsRepository.findByPost(post).size();
+        // 모든 게시물의 조회수를 합산
+        int totalViewCount = posts.stream()
+                .mapToInt(post -> viewsRepository.findByPost(post).size())
+                .sum();
 
-            return new PostSummaryDTO(
-                    post.getId(),
-                    post.getTitle(),
-                    0, // 좋아요 수는 0으로 설정 (나중에 'likeCount,'로 변경해서 통합해야함)
-                    viewCount,
-                    post.getImageUrl(),
-                    post.getCreatedAt() // 작성한 날짜
-            );
-        }).collect(Collectors.toList());
+        return totalViewCount; // 총 조회수 반환
     }
 }
