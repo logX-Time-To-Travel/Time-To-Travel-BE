@@ -15,5 +15,6 @@ public class PostCreateDTO {
     private Long memberId;
     private String title;
     private String content;
+    private String thumbnail;
     private List<LocationDTO> locations;
 }
