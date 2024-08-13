@@ -11,11 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-
 @RestController
 @RequestMapping("/member")
 @RequiredArgsConstructor
@@ -87,8 +82,22 @@ public class MemberController {
 
     @GetMapping("/{username}")
     public ResponseEntity<UserInfoDTO> showUserInfo(@PathVariable String username) {
+        Member member = memberService.getMemberByUsername(username); // 사용자를 username으로 조회
+        if (member == null) {
+            return ResponseEntity.status(404).body(null); // 사용자 없음
+        }
+
+        // 사용자 정보 조회
         UserInfoDTO userInfo = memberService.getUserInfoByUsername(username);
-        return ResponseEntity.ok(userInfo);
+
+        // 총 좋아요 수 및 총 조회수 계산
+        int totalLikeCount = likesService.getTotalPostLikesByMember(member); // 총 좋아요 수
+        int totalViewCount = viewsService.getTotalPostViewsByMember(member); // 총 조회수
+
+        userInfo.setTotalLikeCount(totalLikeCount);
+        userInfo.setTotalViewCount(totalViewCount);
+
+        return ResponseEntity.ok(userInfo); // 사용자 정보와 통합된 정보를 반환
     }
 
     @PutMapping("/{username}")
@@ -100,28 +109,4 @@ public class MemberController {
             return ResponseEntity.status(404).build();
         }
     }
-
-    @GetMapping("/{username}/posts/summary") // 엔드포인트 수정할 예정
-    public ResponseEntity<PostSummaryDTO> getPostSummary(@PathVariable String username) {
-        Member member = memberService.getMemberByUsername(username); // 사용자를 username으로 조회
-        if (member == null) {
-            return ResponseEntity.status(404).body(null); // 사용자 없음
-        }
-
-        int totalLikeCount = likesService.getTotalPostLikesByMember(member); // 총 좋아요 수
-        int totalViewCount = viewsService.getTotalPostViewsByMember(member); // 총 조회수
-
-        // 새로운 PostSummaryDTO 객체 생성 (null값들은 필요에 따라 변경 가능)
-        PostSummaryDTO summary = new PostSummaryDTO(
-                null,
-                null,
-                totalLikeCount,
-                totalViewCount,
-                null,
-                null
-        );
-
-        return ResponseEntity.ok(summary); // 통합된 정보를 반환
-    }
-
 }

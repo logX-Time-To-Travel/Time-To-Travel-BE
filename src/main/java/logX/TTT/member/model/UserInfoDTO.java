@@ -15,4 +15,6 @@ public class UserInfoDTO {
     private String introduction;
     private String profileImageUrl;
     private LocalDateTime created_at;
+    private int totalLikeCount;
+    private int totalViewCount;
 }
