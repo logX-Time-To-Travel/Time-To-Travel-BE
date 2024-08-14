@@ -88,6 +88,10 @@ public class PostService {
         postRepository.delete(post);
     }
 
+    private int getPostCountByMemberId(Long memberId) {
+        return postRepository.countByMemberId(memberId);
+    }
+
     private void incrementViewCount(Post post) {
         // 조회수 증가 로직 구현
         Views view = new Views(); // Views 객체 생성
@@ -104,11 +108,14 @@ public class PostService {
                 post.getId(),
                 post.getTitle(),
                 post.getMember().getUsername(),
+                post.getMember().getProfileImageUrl(),
+                post.getMember().getIntroduction(),
                 post.getContent(),
                 locationDTOs,
+                getPostCountByMemberId(post.getMember().getId()),
                 post.getLikes().size(),
                 post.getViews().size(),
-                post.getViews().size(),
+                post.getComments().size(),
                 post.getCreatedAt()
         );
     }
