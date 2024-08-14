@@ -103,11 +103,12 @@ public class PostService {
         return new PostResponseDTO(
                 post.getId(),
                 post.getTitle(),
-                post.getContent(), // 'data' 필드에 맞는 데이터 제공
+                post.getMember().getUsername(),
+                post.getContent(),
                 locationDTOs,
-                post.getLikes(),
-                post.getViews(), // Views 리스트
-                post.getViews().size(), // 조회수 개수 반환
+                post.getLikes().size(),
+                post.getViews().size(),
+                post.getViews().size(),
                 post.getCreatedAt()
         );
     }
