@@ -69,7 +69,9 @@ public class MemberService {
                 member.getUsername(),
                 member.getIntroduction(),
                 member.getProfileImageUrl(),
-                member.getCreatedAt()
+                member.getCreatedAt(),
+                member.getTotalLikes(),
+                member.getTotalViews()
         );
     }
 
@@ -111,7 +113,9 @@ public class MemberService {
                 member.getUsername(),
                 member.getIntroduction(),
                 member.getProfileImageUrl(),
-                member.getCreatedAt()
+                member.getCreatedAt(),
+                member.getTotalLikes(),
+                member.getTotalViews()
         );
     }
 

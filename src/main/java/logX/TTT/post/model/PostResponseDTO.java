@@ -18,10 +18,14 @@ import java.util.List;
 public class PostResponseDTO {
     private Long id;
     private String title;
+    private String username;
+    private String profileImageUrl;
+    private String introduction;
     private String data;
     private List<LocationDTO> locations;
-    private List<Likes> likes;
-    private List<Views> views;
+    private int postCount;
+    private int likeCount;
     private int viewCount;
+    private int commentCount;
     private LocalDateTime createdAt;
 }
