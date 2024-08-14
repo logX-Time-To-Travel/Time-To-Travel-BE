@@ -19,8 +19,11 @@ public class PostResponseDTO {
     private Long id;
     private String title;
     private String username;
+    private String profileImageUrl;
+    private String introduction;
     private String data;
     private List<LocationDTO> locations;
+    private int postCount;
     private int likeCount;
     private int viewCount;
     private int commentCount;
