@@ -6,10 +6,12 @@ import logX.TTT.member.Member;
 import logX.TTT.member.MemberRepository;
 import logX.TTT.post.model.PostCreateDTO;
 import logX.TTT.post.model.PostResponseDTO;
+import logX.TTT.post.model.PostSummaryDTO;
 import logX.TTT.views.Views;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -120,21 +122,36 @@ public class PostService {
         );
     }
 
+    private PostSummaryDTO convertToSummaryDTO(Post post) {
+        return new PostSummaryDTO(
+                post.getId(),
+                post.getTitle(),
+                post.getLikes().size(),
+                post.getViews().size(),
+                post.getThumbnail(),
+                post.getCreatedAt()
+        );
+    }
+
     public List<PostResponseDTO> convertToResponseDTOs(List<Post> posts) {
         return posts.stream()
                 .map(this::convertToResponseDTO)
                 .collect(Collectors.toList());
     }
 
-    public List<PostResponseDTO> getPostsByUsername(String username) {
+    public List<PostSummaryDTO> convertToSummaryDTOs(List<Post> posts) {
+        return posts.stream()
+                .map(this::convertToSummaryDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<PostSummaryDTO> getPostsByUsername(String username) {
         Member member = memberRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("회원이 존재하지 않습니다."));
 
         List<Post> posts = postRepository.findByMember(member);
 
-        return posts.stream()
-                .map(this::convertToResponseDTO)
-                .collect(Collectors.toList());
+        return convertToSummaryDTOs(posts);
     }
 }
 
