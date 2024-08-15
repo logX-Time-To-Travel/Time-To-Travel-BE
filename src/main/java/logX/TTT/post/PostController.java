@@ -2,6 +2,7 @@ package logX.TTT.post;
 
 import logX.TTT.post.model.PostCreateDTO;
 import logX.TTT.post.model.PostResponseDTO;
+import logX.TTT.post.model.PostSummaryDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -72,9 +73,9 @@ public class PostController {
     }
 
     @GetMapping("/user/{username}")
-    public ResponseEntity<List<PostResponseDTO>> getPostsByUsername(@PathVariable String username) {
+    public ResponseEntity<List<PostSummaryDTO>> getPostsByUsername(@PathVariable String username) {
         try {
-            List<PostResponseDTO> posts = postService.getPostsByUsername(username);
+            List<PostSummaryDTO> posts = postService.getPostsByUsername(username);
             return ResponseEntity.ok(posts);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
