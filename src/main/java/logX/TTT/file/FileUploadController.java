@@ -20,14 +20,13 @@ public class FileUploadController {
     private FileStorageService fileStorageService;
 
     @PostMapping("/upload")
-    public ResponseEntity<Map<String, String>> uploadFile(@RequestParam("file")MultipartFile file) {
+    public ResponseEntity<Map<String, String>> uploadFile(@RequestParam("file") MultipartFile file) {
         Map<String, String> response = new HashMap<>();
         try {
             String filePath = fileStorageService.storeFile(file);
-            response.put("imageURL", filePath);
+            response.put("imageURL", filePath); // URL 경로에 맞게 반환
             return ResponseEntity.ok(response);
-        }
-        catch(IOException e) {
+        } catch (IOException e) {
             response.put("error", "파일 업로드 실패");
             return ResponseEntity.status(500).body(response);
         }
