@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 public class Search {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long searchHistoryId;
 
     @ManyToOne
