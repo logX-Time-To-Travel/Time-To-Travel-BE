@@ -49,7 +49,7 @@ public class LikesService {
                     likedPost.getTitle(),
                     likeCount,
                     viewCount,
-                    likedPost.getImageUrl(),
+                    likedPost.getThumbnail(),
                     likedPost.getCreatedAt()
             );
         }).collect(Collectors.toList());

@@ -31,7 +31,7 @@ public class LocationService {
                                     post.getTitle(),
                                     post.getLikes().size(), // 좋아요 수
                                     post.getViews().size(), // 조회수
-                                    post.getImageUrl(),
+                                    post.getThumbnail(),
                                     post.getCreatedAt() // 추가
                             ))
                             .collect(Collectors.toList());
