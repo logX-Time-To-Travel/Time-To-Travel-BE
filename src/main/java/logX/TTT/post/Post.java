@@ -52,9 +52,5 @@ public class Post {
     private List<Likes> likes;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Views> views = new ArrayList<>();
-
-    @Column(name = "image_url")
-    private String imageUrl;
-
+    private List<Views> views;
 }

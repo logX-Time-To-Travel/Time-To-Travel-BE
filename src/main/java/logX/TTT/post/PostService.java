@@ -11,7 +11,6 @@ import logX.TTT.views.Views;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,7 +42,9 @@ public class PostService {
                 .thumbnail(postCreateDTO.getThumbnail())
                 .member(member)
                 .locations(locations)
-                .views(new ArrayList<>()) // 초기화
+                .likes(new ArrayList<>()) // 좋아요 초기화
+                .views(new ArrayList<>()) // 조회수 초기화
+                .comments(new ArrayList<>()) // 댓글 초기화
                 .build();
 
         locations.forEach(location -> location.setPost(post));
