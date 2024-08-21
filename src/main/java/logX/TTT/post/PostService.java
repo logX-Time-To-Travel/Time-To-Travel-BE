@@ -98,6 +98,7 @@ public class PostService {
     private void incrementViewCount(Post post) {
         // 조회수 증가 로직 구현
         Views view = new Views(); // Views 객체 생성
+        view.setPost(post); // post 필드 설정
         post.getViews().add(view); // 조회수 리스트에 추가
         postRepository.save(post); // 변경된 상태를 저장
     }
