@@ -84,4 +84,12 @@ public class LikesService {
 
         likesRepository.deleteByPostAndMember(post, member);
     }
+
+    public boolean isPostLikedByUser(Long postId, Long memberId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid post ID"));
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid member ID"));
+        return likesRepository.existsByPostAndMember(post, member);
+    }
 }
