@@ -1,5 +1,7 @@
 package logX.TTT.post;
 
+import jakarta.servlet.http.HttpSession;
+import logX.TTT.likes.LikesService;
 import logX.TTT.location.Location;
 import logX.TTT.location.model.LocationDTO;
 import logX.TTT.member.Member;
@@ -8,6 +10,7 @@ import logX.TTT.post.model.PostCreateDTO;
 import logX.TTT.post.model.PostResponseDTO;
 import logX.TTT.post.model.PostSummaryDTO;
 import logX.TTT.views.Views;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,13 +19,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class PostService {
 
-    @Autowired
-    private PostRepository postRepository;
-
-    @Autowired
-    private MemberRepository memberRepository;
+    private final PostRepository postRepository;
+    private final MemberRepository memberRepository;
+    private final LikesService likesService;
+    private final HttpSession session;
 
     public PostResponseDTO createPost(PostCreateDTO postCreateDTO) {
         Member member = memberRepository.findById(postCreateDTO.getMemberId())
@@ -113,6 +116,15 @@ public class PostService {
                 .map(location -> new LocationDTO(location.getName(), location.getLatitude(), location.getLongitude()))
                 .collect(Collectors.toList());
 
+        boolean isLiked = false;
+
+        // 세션에서 memberId 가져오기
+        Long memberId = (Long) session.getAttribute("memberId");
+        if (memberId != null) {
+            isLiked = likesService.isPostLikedByUser(post.getId(), memberId);
+        }
+
+
         return new PostResponseDTO(
                 post.getId(),
                 post.getTitle(),
@@ -125,7 +137,8 @@ public class PostService {
                 post.getLikes().size(),
                 post.getViews().size(),
                 post.getComments().size(),
-                post.getCreatedAt()
+                post.getCreatedAt(),
+                isLiked
         );
     }
 
