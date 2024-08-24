@@ -19,7 +19,7 @@ public class CommentController {
     private final CommentService commentService;
 
     // 댓글 작성
-    @PostMapping("/{postId}/add")
+    @PostMapping("/add")
     public ResponseEntity<CommentResponseDTO> createComment(@RequestBody CommentCreateDTO commentDTO) {
         try {
             CommentResponseDTO createdComment = commentService.createComment(commentDTO.getPostId(), commentDTO.getMemberId(), commentDTO.getContent());
