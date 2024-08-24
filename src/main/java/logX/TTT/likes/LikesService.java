@@ -4,6 +4,7 @@ import logX.TTT.member.Member;
 import logX.TTT.post.Post;
 import logX.TTT.post.model.PostSummaryDTO;
 import logX.TTT.views.ViewsRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,16 +12,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class LikesService {
 
     private final LikesRepository likesRepository;
     private final ViewsRepository viewsRepository;
-
-    @Autowired
-    public LikesService(LikesRepository likesRepository, ViewsRepository viewsRepository) {
-        this.likesRepository = likesRepository;
-        this.viewsRepository = viewsRepository;
-    }
 
     // 한 사용자가 작성한 모든 게시물의 총 좋아요 수 가져오기
     public int getTotalPostLikesByMember(Member member) {
