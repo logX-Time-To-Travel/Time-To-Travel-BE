@@ -28,5 +28,5 @@ public class PostResponseDTO {
     private int viewCount;
     private int commentCount;
     private LocalDateTime createdAt;
-    private boolean isLiked;
+    private boolean liked;
 }

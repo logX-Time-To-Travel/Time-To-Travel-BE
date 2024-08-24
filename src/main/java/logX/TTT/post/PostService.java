@@ -119,7 +119,8 @@ public class PostService {
         boolean isLiked = false;
 
         // 세션에서 memberId 가져오기
-        Long memberId = (Long) session.getAttribute("memberId");
+        Long memberId = (Long) session.getAttribute("member");
+        System.out.println("memberId = " + memberId);
         if (memberId != null) {
             isLiked = likesService.isPostLikedByUser(post.getId(), memberId);
         }
