@@ -28,4 +28,10 @@ public class ScrapController {
         List<ScrapDTO> scraps = scrapService.getScraps(memberId);
         return ResponseEntity.ok(scraps);
     }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteScrap(@RequestBody ScrapDTO scrapDTO) {
+        scrapService.deleteScrap(scrapDTO);
+        return ResponseEntity.noContent().build();
+    }
 }

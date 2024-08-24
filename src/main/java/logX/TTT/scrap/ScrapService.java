@@ -7,6 +7,7 @@ import logX.TTT.post.PostRepository;
 import logX.TTT.scrap.model.ScrapDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,4 +42,13 @@ public class ScrapService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public void deleteScrap(ScrapDTO scrapDTO) {
+        Member member = memberRepository.findById(scrapDTO.getMemberId())
+                .orElseThrow(() -> new RuntimeException("Member not found"));
+        Post post = postRepository.findById(scrapDTO.getPostId())
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+
+        scrapRepository.deleteByMemberAndPost(member, post);
+    }
 }
