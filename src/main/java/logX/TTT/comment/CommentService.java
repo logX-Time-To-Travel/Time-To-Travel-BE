@@ -51,12 +51,16 @@ public class CommentService {
         return comments.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
-    public CommentResponseDTO updateComment(Long commentId, String content) {
-        Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid comment ID"));
+    public CommentResponseDTO updateComment(Long commentId, Long postId, String content) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid post ID"));
+
+        Comment comment = commentRepository.findByIdAndPostId(commentId, postId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid comment ID for the specified post"));
 
         comment.setContent(content);
         Comment updatedComment = commentRepository.save(comment);
+
         return convertToDTO(updatedComment);
     }
 

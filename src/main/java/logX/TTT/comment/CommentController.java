@@ -44,7 +44,7 @@ public class CommentController {
     @PutMapping("/{commentId}")
     public ResponseEntity<CommentResponseDTO> updateComment(@PathVariable Long commentId, @RequestBody CommentCreateDTO commentDTO) {
         try {
-            CommentResponseDTO updatedComment = commentService.updateComment(commentId, commentDTO.getContent());
+            CommentResponseDTO updatedComment = commentService.updateComment(commentId, commentDTO.getPostId(), commentDTO.getContent());
             return ResponseEntity.ok(updatedComment);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
