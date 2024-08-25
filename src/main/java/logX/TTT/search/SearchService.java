@@ -5,6 +5,7 @@ import logX.TTT.member.MemberRepository;
 import logX.TTT.search.model.SearchDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,6 +39,7 @@ public class SearchService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public void deleteQuery(Long memberId, Long searchedHistoryId) {
         searchHistoryRepository.deleteByMemberIdAndSearchHistoryId(memberId, searchedHistoryId);
     }

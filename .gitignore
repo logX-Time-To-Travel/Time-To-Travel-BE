@@ -6,12 +6,12 @@ build/
 !**/src/test/**/build/
 
 # Ignore all files in the images directory
-images/*
-images/**
+src/main/resources/static/images/*
+src/main/resources/static/images/**
 
 # But do not ignore the images directory itself
-!images/
-!images/.gitkeep
+!src/main/resources/static/images/
+!src/main/resources/static/images/.gitkeep
 
 ### STS ###
 .apt_generated

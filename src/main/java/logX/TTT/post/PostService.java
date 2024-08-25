@@ -1,5 +1,7 @@
 package logX.TTT.post;
 
+import jakarta.servlet.http.HttpSession;
+import logX.TTT.likes.LikesService;
 import logX.TTT.location.Location;
 import logX.TTT.location.model.LocationDTO;
 import logX.TTT.member.Member;
@@ -8,22 +10,22 @@ import logX.TTT.post.model.PostCreateDTO;
 import logX.TTT.post.model.PostResponseDTO;
 import logX.TTT.post.model.PostSummaryDTO;
 import logX.TTT.views.Views;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class PostService {
 
-    @Autowired
-    private PostRepository postRepository;
-
-    @Autowired
-    private MemberRepository memberRepository;
+    private final PostRepository postRepository;
+    private final MemberRepository memberRepository;
+    private final LikesService likesService;
+    private final HttpSession session;
 
     public PostResponseDTO createPost(PostCreateDTO postCreateDTO) {
         Member member = memberRepository.findById(postCreateDTO.getMemberId())
@@ -43,7 +45,9 @@ public class PostService {
                 .thumbnail(postCreateDTO.getThumbnail())
                 .member(member)
                 .locations(locations)
-                .views(new ArrayList<>()) // 초기화
+                .likes(new ArrayList<>()) // 좋아요 초기화
+                .views(new ArrayList<>()) // 조회수 초기화
+                .comments(new ArrayList<>()) // 댓글 초기화
                 .build();
 
         locations.forEach(location -> location.setPost(post));
@@ -69,20 +73,25 @@ public class PostService {
         post.setContent(postCreateDTO.getContent());
         post.setThumbnail(postCreateDTO.getThumbnail());
 
+        post.getLocations().clear(); // 기존 locations 리스트 삭제
+        postRepository.flush(); // 기존 데이터가 반영
+
+        // 새로운 locations 리스트 설정
         List<Location> locations = postCreateDTO.getLocations().stream()
                 .map(dto -> Location.builder()
                         .name(dto.getName())
                         .latitude(dto.getLatitude())
                         .longitude(dto.getLongitude())
+                        .post(post) // Post <-> Location 연관관계 설정
                         .build())
                 .collect(Collectors.toList());
 
-        post.setLocations(locations);
-        locations.forEach(location -> location.setPost(post));
+        post.getLocations().addAll(locations);
 
         Post updatedPost = postRepository.save(post);
         return convertToResponseDTO(updatedPost);
     }
+
 
     public void deletePost(Long id) {
         Post post = postRepository.findById(id)
@@ -97,6 +106,7 @@ public class PostService {
     private void incrementViewCount(Post post) {
         // 조회수 증가 로직 구현
         Views view = new Views(); // Views 객체 생성
+        view.setPost(post); // post 필드 설정
         post.getViews().add(view); // 조회수 리스트에 추가
         postRepository.save(post); // 변경된 상태를 저장
     }
@@ -105,6 +115,16 @@ public class PostService {
         List<LocationDTO> locationDTOs = post.getLocations().stream()
                 .map(location -> new LocationDTO(location.getName(), location.getLatitude(), location.getLongitude()))
                 .collect(Collectors.toList());
+
+        boolean isLiked = false;
+
+        // 세션에서 memberId 가져오기
+        Long memberId = (Long) session.getAttribute("member");
+        System.out.println("memberId = " + memberId);
+        if (memberId != null) {
+            isLiked = likesService.isPostLikedByUser(post.getId(), memberId);
+        }
+
 
         return new PostResponseDTO(
                 post.getId(),
@@ -118,7 +138,8 @@ public class PostService {
                 post.getLikes().size(),
                 post.getViews().size(),
                 post.getComments().size(),
-                post.getCreatedAt()
+                post.getCreatedAt(),
+                isLiked
         );
     }
 

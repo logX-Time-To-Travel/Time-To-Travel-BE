@@ -13,17 +13,19 @@ import java.util.Date;
 
 @Service
 public class FileStorageService {
-    @Value("${file.upload-dir}")
-    private String uploadDir;
+
+    private final String uploadDir = "src/main/resources/static/images";
 
     public String storeFile(MultipartFile file) throws IOException {
-        String filename = file.getOriginalFilename();
+        String originalFilename = file.getOriginalFilename();
         String timestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-        String newFilename = filename + "_" + timestamp;
+        String newFilename = timestamp + "_" + originalFilename;
 
         Path filePath = Paths.get(uploadDir, newFilename);
         Files.createDirectories(filePath.getParent());
         Files.copy(file.getInputStream(), filePath);
-        return filePath.toString();
+
+        // 이미지 파일이 저장된 경로에서 '/images/' URL을 반환
+        return "/images/" + newFilename;
     }
 }

@@ -1,4 +1,3 @@
-CREATE DATABASE ttt;
 use ttt;
 
 CREATE TABLE member

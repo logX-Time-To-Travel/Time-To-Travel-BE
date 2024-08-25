@@ -19,7 +19,7 @@ public class CommentController {
     private final CommentService commentService;
 
     // 댓글 작성
-    @PostMapping("/{postId}/add")
+    @PostMapping("/add")
     public ResponseEntity<CommentResponseDTO> createComment(@RequestBody CommentCreateDTO commentDTO) {
         try {
             CommentResponseDTO createdComment = commentService.createComment(commentDTO.getPostId(), commentDTO.getMemberId(), commentDTO.getContent());
@@ -44,7 +44,7 @@ public class CommentController {
     @PutMapping("/{commentId}")
     public ResponseEntity<CommentResponseDTO> updateComment(@PathVariable Long commentId, @RequestBody CommentCreateDTO commentDTO) {
         try {
-            CommentResponseDTO updatedComment = commentService.updateComment(commentId, commentDTO.getContent());
+            CommentResponseDTO updatedComment = commentService.updateComment(commentId, commentDTO.getPostId(), commentDTO.getContent());
             return ResponseEntity.ok(updatedComment);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
