@@ -42,7 +42,7 @@ public class MemberController {
         }
     }
 
-    @PostMapping("/session")
+    @GetMapping("/session")
     public ResponseEntity<SessionDTO> session(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("member") == null) {
