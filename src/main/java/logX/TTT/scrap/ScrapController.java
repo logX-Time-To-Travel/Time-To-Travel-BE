@@ -16,9 +16,9 @@ public class ScrapController {
     private final ScrapService scrapService;
 
     // 게시글 스크랩 요청
-    @PostMapping
-    public ResponseEntity<Void> scrapPost(@RequestBody ScrapDTO scrapDTO) {
-        scrapService.scrapPost(scrapDTO);
+    @PostMapping("/{postId}/{memberId}")
+    public ResponseEntity<Void> scrapPost(@PathVariable Long postId, @PathVariable Long memberId) {
+        scrapService.scrapPost(postId, memberId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -29,9 +29,9 @@ public class ScrapController {
         return ResponseEntity.ok(scraps);
     }
 
-    @DeleteMapping
-    public ResponseEntity<Void> deleteScrap(@RequestBody ScrapDTO scrapDTO) {
-        scrapService.deleteScrap(scrapDTO);
+    @DeleteMapping("/{postId}/{memberId}")
+    public ResponseEntity<Void> deleteScrap(@PathVariable Long postId, @PathVariable Long memberId) {
+        scrapService.deleteScrap(postId, memberId);
         return ResponseEntity.noContent().build();
     }
 }
