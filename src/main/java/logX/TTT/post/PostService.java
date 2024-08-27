@@ -9,6 +9,7 @@ import logX.TTT.member.MemberRepository;
 import logX.TTT.post.model.PostCreateDTO;
 import logX.TTT.post.model.PostResponseDTO;
 import logX.TTT.post.model.PostSummaryDTO;
+import logX.TTT.scrap.ScrapService;
 import logX.TTT.views.Views;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
     private final LikesService likesService;
+    private final ScrapService scrapService;
     private final HttpSession session;
 
     public PostResponseDTO createPost(PostCreateDTO postCreateDTO) {
@@ -117,12 +119,14 @@ public class PostService {
                 .collect(Collectors.toList());
 
         boolean isLiked = false;
+        boolean isScrapped = false;
 
         // 세션에서 memberId 가져오기
         Long memberId = (Long) session.getAttribute("member");
         System.out.println("memberId = " + memberId);
         if (memberId != null) {
             isLiked = likesService.isPostLikedByUser(post.getId(), memberId);
+            isScrapped = scrapService.isScrappedByUser(post.getId(), memberId);
         }
 
 
@@ -139,7 +143,8 @@ public class PostService {
                 post.getViews().size(),
                 post.getComments().size(),
                 post.getCreatedAt(),
-                isLiked
+                isLiked,
+                isScrapped,
         );
     }
 

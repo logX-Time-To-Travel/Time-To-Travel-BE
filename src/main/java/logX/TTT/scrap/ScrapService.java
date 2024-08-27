@@ -51,4 +51,12 @@ public class ScrapService {
 
         scrapRepository.deleteByMemberAndPost(member, post);
     }
+
+    public boolean isScrappedByUser(Long postId, Long memberId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid post ID"));
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid member ID"));
+        return scrapRepository.existsByPostAndMember(post, member);
+    }
 }
