@@ -144,7 +144,7 @@ public class PostService {
                 post.getComments().size(),
                 post.getCreatedAt(),
                 isLiked,
-                isScrapped,
+                isScrapped
         );
     }
 
