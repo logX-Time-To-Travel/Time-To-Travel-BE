@@ -20,10 +20,10 @@ public class ScrapService {
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
 
-    public void scrapPost(ScrapDTO scrapDTO) {
-        Member member = memberRepository.findById(scrapDTO.getMemberId())
+    public void scrapPost(Long postId, Long memberId) {
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new RuntimeException("Member not found"));
-        Post post = postRepository.findById(scrapDTO.getPostId())
+        Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
 
         Scrap scrap = new Scrap();
@@ -43,12 +43,20 @@ public class ScrapService {
     }
 
     @Transactional
-    public void deleteScrap(ScrapDTO scrapDTO) {
-        Member member = memberRepository.findById(scrapDTO.getMemberId())
+    public void deleteScrap(Long postId, Long memberId) {
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new RuntimeException("Member not found"));
-        Post post = postRepository.findById(scrapDTO.getPostId())
+        Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
 
         scrapRepository.deleteByMemberAndPost(member, post);
+    }
+
+    public boolean isScrappedByUser(Long postId, Long memberId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid post ID"));
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid member ID"));
+        return scrapRepository.existsByPostAndMember(post, member);
     }
 }

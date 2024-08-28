@@ -29,4 +29,5 @@ public class PostResponseDTO {
     private int commentCount;
     private LocalDateTime createdAt;
     private boolean liked;
+    private boolean scrapped;
 }
