@@ -179,5 +179,23 @@ public class PostService {
 
         return convertToSummaryDTOs(posts);
     }
+
+    public List<PostSummaryDTO> getPostsByMember() {
+        Long memberId = (Long) session.getAttribute("member");
+        if (memberId == null) {
+            throw new RuntimeException("로그인된 사용자가 아닙니다.");
+        }
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("회원이 존재하지 않습니다."));
+
+        List<Post> posts = postRepository.findByMember(member);
+        return convertToSummaryDTOs(posts);
+    }
+
+    // 작성한 글의 개수를 가져오는 메서드
+    public long getPostCountByMember(Member member) {
+        return postRepository.countByMemberId(member.getId());
+    }
 }
 

@@ -81,4 +81,8 @@ public class CommentService {
                 comment.getCreatedAt()
         );
     }
+
+    public int getCommentCountByMember(Member member) {
+        return commentRepository.countByMemberId(member.getId());
+    }
 }
