@@ -16,10 +16,11 @@ public class UserInfoDTO {
     private String username;
     private String introduction;
     private String profileImageUrl;
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
     private int totalLikeCount;
     private int totalViewCount;
     private List<PostSummaryDTO> myPosts;
-    private int myPostCount;
-    private int myCommentCount;
+    private int totalPostCount;
+    private int totalCommentCount;
+
 }

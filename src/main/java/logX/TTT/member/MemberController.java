@@ -111,8 +111,8 @@ public class MemberController {
         userInfo.setTotalLikeCount(totalLikeCount);
         userInfo.setTotalViewCount(totalViewCount);
         userInfo.setMyPosts(myPosts);
-        userInfo.setMyPostCount(myPostCount);
-        userInfo.setMyCommentCount(myCommentCount);
+        userInfo.setTotalPostCount(myPostCount);
+        userInfo.setTotalCommentCount(myCommentCount);
 
         return ResponseEntity.ok(userInfo); // 사용자 정보와 통합된 정보를 반환
     }
