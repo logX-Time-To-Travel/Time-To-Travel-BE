@@ -1,18 +1,20 @@
 package logX.TTT.interest;
 
+import logX.TTT.likes.LikesRepository;
 import logX.TTT.member.MemberService;
 import logX.TTT.post.Post;
 import logX.TTT.post.PostRepository;
 import logX.TTT.post.PostService;
 import logX.TTT.post.model.PostResponseDTO;
 import logX.TTT.post.model.PostSummaryDTO;
+import logX.TTT.scrap.ScrapRepository;
 import logX.TTT.search.SearchService;
 import logX.TTT.search.model.SearchDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class InterestService {
@@ -29,13 +31,39 @@ public class InterestService {
     @Autowired
     private MemberService memberService;
 
+    @Autowired
+    private LikesRepository likesRepository;
+
+    @Autowired
+    private ScrapRepository scrapRepository;
+
     public List<PostSummaryDTO> getRecommendedPosts(String username) {
         Long memberId = memberService.getMemberIdByUsername(username);
+
+        // 최근 검색 기록 기반 추천
         List<SearchDTO> recentQueries = searchService.getRecentSearchQueries(memberId);
-        List<Post> recommendedPosts = new ArrayList<>();
+        Set<Post> recommendedPosts = new HashSet<>();
         for (SearchDTO searchDTO : recentQueries) {
             recommendedPosts.addAll(postRepository.findByTitleContainingOrContentDataContaining(searchDTO.getQuery()));
         }
-        return postService.convertToSummaryDTOs(recommendedPosts);
+
+        // 좋아요한 게시물 기반 추천
+        List<Post> likedPosts = likesRepository.findPostsByMemberId(memberId);
+        for (Post likedPost : likedPosts) {
+            recommendedPosts.addAll(postRepository.findByTitleContainingOrContentDataContaining(likedPost.getTitle()));
+        }
+
+        // 스크랩한 게시물 기반 추천
+        List<Post> scrappedPosts = scrapRepository.findPostsByMemberId(memberId);
+        for (Post scrappedPost : scrappedPosts) {
+            recommendedPosts.addAll(postRepository.findByTitleContainingOrContentDataContaining(scrappedPost.getTitle()));
+        }
+
+        // 랜덤으로 5개 선택
+        List<Post> randomPosts = recommendedPosts.stream().collect(Collectors.toList());
+        Collections.shuffle(randomPosts);
+        List<Post> selectedPosts = randomPosts.stream().limit(5).collect(Collectors.toList());
+
+        return postService.convertToSummaryDTOs(new ArrayList<>(selectedPosts));
     }
 }
