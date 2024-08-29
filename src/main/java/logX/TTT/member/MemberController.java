@@ -4,6 +4,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import logX.TTT.comment.CommentService;
 import logX.TTT.likes.LikesService;
+import logX.TTT.member.exception.EmailNotFoundException;
+import logX.TTT.member.exception.InvalidPasswordException;
 import logX.TTT.member.model.*;
 import logX.TTT.post.PostService;
 import logX.TTT.post.model.PostSummaryDTO;
@@ -33,8 +35,12 @@ public class MemberController {
             HttpSession session = request.getSession();
             session.setAttribute("member", loginMember.getId());
             return ResponseEntity.ok().build();
+        } catch (EmailNotFoundException e) {
+            return ResponseEntity.status(404).build();
+        } catch (InvalidPasswordException e) {
+            return ResponseEntity.status(400).build();
         } catch (RuntimeException e) {
-            return ResponseEntity.status(400).body(e.getMessage());
+            return ResponseEntity.status(500).body(e.getMessage());
         }
     }
 

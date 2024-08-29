@@ -1,6 +1,8 @@
 package logX.TTT.member;
 
 import logX.TTT.likes.LikesRepository;
+import logX.TTT.member.exception.EmailNotFoundException;
+import logX.TTT.member.exception.InvalidPasswordException;
 import logX.TTT.member.model.LoginDTO;
 import logX.TTT.member.model.SignupDTO;
 import logX.TTT.member.model.UpdateMemberDTO;
@@ -24,13 +26,12 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final PostRepository postRepository;
 
-
     public Member login(LoginDTO form) {
         Optional<Member> optionalMember = memberRepository.findByEmail(form.getEmail());
-        Member member = optionalMember.orElseThrow(() -> new RuntimeException("가입된 이메일이 없습니다."));
+        Member member = optionalMember.orElseThrow(() -> new EmailNotFoundException());
 
         if (!passwordEncoder.matches(form.getPassword(), member.getPassword())) { // 비밀번호 대조
-            throw new RuntimeException("비밀번호가 일치하지 않습니다.");
+            throw new InvalidPasswordException();
         }
         return member;
     }
