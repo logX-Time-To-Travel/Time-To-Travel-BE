@@ -21,4 +21,5 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findByTitleContainingOrContentDataContaining(@Param("keyword") String keyword);
 
     List<Post> findByMember(Member member);
+
 }

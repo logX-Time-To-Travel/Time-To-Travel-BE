@@ -47,8 +47,8 @@ public class MemberService {
         member.setPassword(passwordEncoder.encode(form.getPassword()));
         member.setProfileImageUrl(form.getProfileImageUrl());
         member.setIntroduction("한 줄 소개입니다. 자신을 멋있게 소개해보세요!");
-        member.setTotalLikes(0);
-        member.setTotalViews(0);
+        member.setTotalLikeCount(0);
+        member.setTotalViewCount(0);
 
         return memberRepository.save(member);
     }
@@ -70,8 +70,11 @@ public class MemberService {
                 member.getIntroduction(),
                 member.getProfileImageUrl(),
                 member.getCreatedAt(),
-                member.getTotalLikes(),
-                member.getTotalViews()
+                member.getTotalLikeCount(),
+                member.getTotalViewCount(),
+                member.getMyPosts(),
+                member.getTotalPostCount(),
+                member.getTotalCommentCount()
         );
     }
 
@@ -114,8 +117,11 @@ public class MemberService {
                 member.getIntroduction(),
                 member.getProfileImageUrl(),
                 member.getCreatedAt(),
-                member.getTotalLikes(),
-                member.getTotalViews()
+                member.getTotalLikeCount(),
+                member.getTotalViewCount(),
+                member.getMyPosts(),
+                member.getTotalPostCount(),
+                member.getTotalCommentCount()
         );
     }
 

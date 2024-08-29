@@ -3,6 +3,7 @@ package logX.TTT.member;
 import jakarta.persistence.*;
 import logX.TTT.likes.Likes;
 import logX.TTT.post.Post;
+import logX.TTT.post.model.PostSummaryDTO;
 import logX.TTT.views.Views;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -42,10 +43,10 @@ public class Member {
     private String profileImageUrl;
 
     @Column(name = "total_likes", nullable = false)
-    private int totalLikes;
+    private int totalLikeCount;
 
     @Column(name = "total_views", nullable = false)
-    private int totalViews;
+    private int totalViewCount;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Likes> likes;
@@ -55,4 +56,13 @@ public class Member {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts;
+
+    @Transient
+    private List<PostSummaryDTO> myPosts;
+
+    @Transient
+    private int totalPostCount;
+
+    @Transient
+    private int totalCommentCount;
 }
