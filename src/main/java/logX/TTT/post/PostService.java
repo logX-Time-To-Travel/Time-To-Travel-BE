@@ -7,6 +7,7 @@ import logX.TTT.location.model.LocationDTO;
 import logX.TTT.member.Member;
 import logX.TTT.member.MemberRepository;
 import logX.TTT.post.model.PostCreateDTO;
+import logX.TTT.post.model.PostInterestDTO;
 import logX.TTT.post.model.PostResponseDTO;
 import logX.TTT.post.model.PostSummaryDTO;
 import logX.TTT.scrap.ScrapService;
@@ -159,6 +160,17 @@ public class PostService {
         );
     }
 
+    private PostInterestDTO convertToInterestDTO(Post post) {
+        return new PostInterestDTO(
+                post.getId(),
+                post.getThumbnail(), // 썸네일 URL
+                post.getMember().getProfileImageUrl(), // 작성자 프로필 이미지 URL
+                post.getMember().getUsername(), // 작성자 이름
+                post.getTitle(), // 게시물 제목
+                post.getCreatedAt() // 작성 시간
+        );
+    }
+
     public List<PostResponseDTO> convertToResponseDTOs(List<Post> posts) {
         return posts.stream()
                 .map(this::convertToResponseDTO)
@@ -168,6 +180,12 @@ public class PostService {
     public List<PostSummaryDTO> convertToSummaryDTOs(List<Post> posts) {
         return posts.stream()
                 .map(this::convertToSummaryDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<PostInterestDTO> convertToInterestDTOs(List<Post> posts) {
+        return posts.stream()
+                .map(this::convertToInterestDTO)
                 .collect(Collectors.toList());
     }
 
