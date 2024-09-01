@@ -39,7 +39,8 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
 
-    @Column(nullable = false)
+    @Lob
+    @Column(nullable = false, columnDefinition = "LONGTEXT")
     private String content;
 
     @Column
