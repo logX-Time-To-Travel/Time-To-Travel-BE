@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -49,6 +50,7 @@ public class PostController {
     }
 
     // 하나의 게시물 삭제
+    @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePost(@PathVariable Long id) {
         try {
@@ -60,15 +62,16 @@ public class PostController {
     }
 
     // 여러 개의 게시물 삭제
+    @Transactional
     @DeleteMapping("/delete")
-    public ResponseEntity<Void> deleteMultiplePosts(@RequestBody List<Long> ids) {
+    public ResponseEntity deleteMultiplePosts(@RequestBody List<Long> ids) {
         try {
             for (Long id : ids) {
                 postService.deletePost(id);
             }
             return ResponseEntity.noContent().build();
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
