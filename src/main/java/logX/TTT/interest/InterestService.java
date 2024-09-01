@@ -5,6 +5,7 @@ import logX.TTT.member.MemberService;
 import logX.TTT.post.Post;
 import logX.TTT.post.PostRepository;
 import logX.TTT.post.PostService;
+import logX.TTT.post.model.PostInterestDTO;
 import logX.TTT.post.model.PostResponseDTO;
 import logX.TTT.post.model.PostSummaryDTO;
 import logX.TTT.scrap.ScrapRepository;
@@ -37,7 +38,7 @@ public class InterestService {
     @Autowired
     private ScrapRepository scrapRepository;
 
-    public List<PostSummaryDTO> getRecommendedPosts(String username) {
+    public List<PostInterestDTO> getRecommendedPosts(String username) {
         Long memberId = memberService.getMemberIdByUsername(username);
 
         // 최근 검색 기록 기반 추천
@@ -64,6 +65,6 @@ public class InterestService {
         Collections.shuffle(randomPosts);
         List<Post> selectedPosts = randomPosts.stream().limit(5).collect(Collectors.toList());
 
-        return postService.convertToSummaryDTOs(new ArrayList<>(selectedPosts));
+        return postService.convertToInterestDTOs(selectedPosts);
     }
 }
