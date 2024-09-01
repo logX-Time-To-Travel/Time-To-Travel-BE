@@ -1,5 +1,8 @@
 package logX.TTT.scrap;
 
+import logX.TTT.member.Member;
+import logX.TTT.member.MemberService;
+import logX.TTT.post.model.PostSummaryDTO;
 import logX.TTT.scrap.model.ScrapDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,6 +17,7 @@ import java.util.List;
 public class ScrapController {
 
     private final ScrapService scrapService;
+    private final MemberService memberService;
 
     // 게시글 스크랩 요청
     @PostMapping("/{postId}/{memberId}")
@@ -24,9 +28,14 @@ public class ScrapController {
 
     // 특정 사용자의 스크랩 목록 조회
     @GetMapping("/{memberId}")
-    public ResponseEntity<List<ScrapDTO>> getScraps(@PathVariable Long memberId) {
-        List<ScrapDTO> scraps = scrapService.getScraps(memberId);
-        return ResponseEntity.ok(scraps);
+    public ResponseEntity<List<PostSummaryDTO>> getLikePosts(@PathVariable Long memberId) {
+        try {
+            Member member = memberService.getMemberById(memberId);
+            List<PostSummaryDTO> posts = scrapService.getScrappedPostsByMember(member);
+            return ResponseEntity.ok(posts);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(500).build();
+        }
     }
 
     @DeleteMapping("/{postId}/{memberId}")
